@@ -155,7 +155,7 @@ export function ChartConfigurator() {
   }
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-y-auto">
+    <div className="flex flex-col gap-4">
       <h2 className="text-sm font-semibold">{t('plot.chartSettings.title')}</h2>
 
       {/* Title */}

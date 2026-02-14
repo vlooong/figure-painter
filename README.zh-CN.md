@@ -4,6 +4,20 @@
 
 [English](./README.md)
 
+## 截图预览
+
+### 数据提取
+
+![数据提取](docs/screenshots/extract-page.png)
+
+### 科研绘图
+
+![科研绘图](docs/screenshots/plot-page.png)
+
+![风格模板](docs/screenshots/plot-page-templates.png)
+
+![图表导出](docs/screenshots/plot-page-export.png)
+
 ## 功能特性
 
 ### 数据提取

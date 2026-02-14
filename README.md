@@ -4,6 +4,20 @@ A web-based tool for extracting data from scientific paper figures and creating 
 
 [中文文档](./README.zh-CN.md)
 
+## Screenshots
+
+### Data Extraction
+
+![Data Extraction](docs/screenshots/extract-page.png)
+
+### Scientific Plotting
+
+![Scientific Plotting](docs/screenshots/plot-page.png)
+
+![Style Templates](docs/screenshots/plot-page-templates.png)
+
+![Chart Export](docs/screenshots/plot-page-export.png)
+
 ## Features
 
 ### Data Extraction

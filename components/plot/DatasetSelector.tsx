@@ -1,0 +1,147 @@
+'use client'
+
+import { useCallback, useEffect, useRef } from 'react'
+import { useDatasetStore } from '@/stores/datasetStore'
+import { usePlotStore } from '@/stores/plotStore'
+import { importCSV } from '@/services/exportService'
+import { db } from '@/services/db'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
+import type { Dataset } from '@/lib/types'
+
+const MAX_SELECTED = 5
+
+export function DatasetSelector() {
+  const datasets = useDatasetStore((s) => s.datasets)
+  const { addDataset, loadFromDb } = useDatasetStore((s) => s.actions)
+  const activePlot = usePlotStore((s) => s.activePlot)
+  const { addDatasetToPlot, removeDatasetFromPlot } = usePlotStore(
+    (s) => s.actions
+  )
+  const csvInputRef = useRef<HTMLInputElement>(null)
+
+  // Load datasets from Dexie on mount
+  useEffect(() => {
+    loadFromDb()
+  }, [loadFromDb])
+
+  const datasetList = Array.from(datasets.values())
+  const selectedIds = new Set(activePlot?.datasetIds ?? [])
+
+  const handleToggle = useCallback(
+    (id: string, checked: boolean) => {
+      if (checked) {
+        if (selectedIds.size >= MAX_SELECTED) return
+        addDatasetToPlot(id)
+      } else {
+        removeDatasetFromPlot(id)
+      }
+    },
+    [selectedIds.size, addDatasetToPlot, removeDatasetFromPlot]
+  )
+
+  const handleImportCSV = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0]
+      if (!file) return
+      const points = await importCSV(file)
+      if (points.length > 0) {
+        const dataset: Dataset = {
+          id: crypto.randomUUID(),
+          name: file.name.replace(/\.[^.]+$/, ''),
+          color: getNextColor(datasets.size),
+          points,
+          sourceType: 'imported',
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        }
+        addDataset(dataset)
+        await db.datasets.put(dataset)
+      }
+      e.target.value = ''
+    },
+    [addDataset, datasets.size]
+  )
+
+  return (
+    <div className="flex h-full flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold">Datasets</h2>
+        <span className="text-xs text-muted-foreground">
+          {selectedIds.size}/{MAX_SELECTED}
+        </span>
+      </div>
+
+      <div className="flex-1 overflow-y-auto">
+        {datasetList.length === 0 ? (
+          <p className="py-4 text-center text-xs text-muted-foreground">
+            No datasets yet. Import CSV or extract from an image.
+          </p>
+        ) : (
+          <ul className="flex flex-col gap-1">
+            {datasetList.map((ds) => {
+              const isSelected = selectedIds.has(ds.id)
+              const isDisabled = !isSelected && selectedIds.size >= MAX_SELECTED
+              return (
+                <li
+                  key={ds.id}
+                  className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-accent/50"
+                >
+                  <Checkbox
+                    checked={isSelected}
+                    disabled={isDisabled}
+                    onCheckedChange={(checked) =>
+                      handleToggle(ds.id, checked === true)
+                    }
+                  />
+                  <span
+                    className="inline-block size-3 shrink-0 rounded-full"
+                    style={{ backgroundColor: ds.color }}
+                  />
+                  <span className="flex-1 truncate text-sm">{ds.name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {ds.points.length} pts
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </div>
+
+      <div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full"
+          onClick={() => csvInputRef.current?.click()}
+        >
+          Import CSV
+        </Button>
+        <input
+          ref={csvInputRef}
+          type="file"
+          accept=".csv"
+          className="hidden"
+          onChange={handleImportCSV}
+        />
+      </div>
+    </div>
+  )
+}
+
+/** Simple palette for auto-assigning colors to datasets */
+const PALETTE = [
+  '#3b82f6', // blue
+  '#ef4444', // red
+  '#22c55e', // green
+  '#f59e0b', // amber
+  '#8b5cf6', // violet
+  '#ec4899', // pink
+  '#06b6d4', // cyan
+  '#f97316', // orange
+]
+
+function getNextColor(index: number): string {
+  return PALETTE[index % PALETTE.length]
+}

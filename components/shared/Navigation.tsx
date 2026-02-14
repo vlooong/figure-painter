@@ -3,21 +3,24 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/extract', label: 'Extract' },
-  { href: '/plot', label: 'Plot' },
-]
+import { useTranslation } from '@/lib/i18n'
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher'
 
 export function Navigation() {
   const pathname = usePathname()
+  const { t } = useTranslation()
+
+  const navItems = [
+    { href: '/', label: t('nav.home') },
+    { href: '/extract', label: t('nav.extract') },
+    { href: '/plot', label: t('nav.plot') },
+  ]
 
   return (
     <nav className="border-b bg-background">
       <div className="mx-auto flex h-12 max-w-7xl items-center gap-6 px-4">
         <Link href="/" className="text-lg font-semibold">
-          Figure Painter
+          {t('nav.brand')}
         </Link>
         <div className="flex gap-1">
           {navItems.map((item) => {
@@ -40,6 +43,9 @@ export function Navigation() {
               </Link>
             )
           })}
+        </div>
+        <div className="ml-auto">
+          <LanguageSwitcher />
         </div>
       </div>
     </nav>

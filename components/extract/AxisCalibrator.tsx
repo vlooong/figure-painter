@@ -4,6 +4,7 @@ import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useExtractStore } from '@/stores/extractStore'
+import { useTranslation } from '@/lib/i18n'
 import type { AxisConfig, Calibration, CalibrationPoint } from '@/lib/types'
 
 export interface AxisCalibratorHandle {
@@ -12,6 +13,7 @@ export interface AxisCalibratorHandle {
 
 export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
   function AxisCalibrator(_props, ref) {
+    const { t } = useTranslation()
     const tool = useExtractStore((s) => s.tool)
     const calibration = useExtractStore((s) => s.calibration)
     const { setCalibration, setTool } = useExtractStore((s) => s.actions)
@@ -92,24 +94,23 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
     return (
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold">Axis Calibration</h3>
+          <h3 className="text-sm font-semibold">{t('extract.calibration.title')}</h3>
           {calibration && (
             <span className="text-xs font-medium text-green-600">
-              Calibrated
+              {t('extract.calibration.calibrated')}
             </span>
           )}
         </div>
 
         {!isCalibrating && !calibration && (
           <Button size="sm" onClick={startCalibration}>
-            Start Calibration
+            {t('extract.calibration.startCalibration')}
           </Button>
         )}
 
         {isCalibrating && (
           <p className="text-xs text-muted-foreground">
-            Click on the image to place calibration points ({points.length}/4).
-            Place at least 2 points with known data values.
+            {t('extract.calibration.instruction', { count: points.length })}
           </p>
         )}
 
@@ -117,7 +118,7 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
         <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="text-xs font-medium text-muted-foreground">
-              X Axis
+              {t('extract.calibration.xAxis')}
             </label>
             <select
               className="mt-1 w-full rounded-md border bg-background px-2 py-1 text-sm"
@@ -126,13 +127,13 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
                 setXAxisType(e.target.value as 'linear' | 'log')
               }
             >
-              <option value="linear">Linear</option>
-              <option value="log">Log</option>
+              <option value="linear">{t('extract.calibration.linear')}</option>
+              <option value="log">{t('extract.calibration.log')}</option>
             </select>
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground">
-              Y Axis
+              {t('extract.calibration.yAxis')}
             </label>
             <select
               className="mt-1 w-full rounded-md border bg-background px-2 py-1 text-sm"
@@ -141,8 +142,8 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
                 setYAxisType(e.target.value as 'linear' | 'log')
               }
             >
-              <option value="linear">Linear</option>
-              <option value="log">Log</option>
+              <option value="linear">{t('extract.calibration.linear')}</option>
+              <option value="log">{t('extract.calibration.log')}</option>
             </select>
           </div>
         </div>
@@ -164,13 +165,13 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
                     size="xs"
                     onClick={() => removePoint(i)}
                   >
-                    Remove
+                    {t('extract.calibration.remove')}
                   </Button>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <label className="text-xs text-muted-foreground">
-                      Data X
+                      {t('extract.calibration.dataX')}
                     </label>
                     <Input
                       type="number"
@@ -184,7 +185,7 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
                   </div>
                   <div>
                     <label className="text-xs text-muted-foreground">
-                      Data Y
+                      {t('extract.calibration.dataY')}
                     </label>
                     <Input
                       type="number"
@@ -205,13 +206,13 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
         {/* Action buttons */}
         {isCalibrating && points.length >= 2 && (
           <Button size="sm" onClick={confirmCalibration}>
-            Confirm Calibration
+            {t('extract.calibration.confirmCalibration')}
           </Button>
         )}
 
         {(isCalibrating || calibration) && (
           <Button variant="outline" size="sm" onClick={clearCalibration}>
-            Clear Calibration
+            {t('extract.calibration.clearCalibration')}
           </Button>
         )}
 
@@ -226,7 +227,7 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
               Y: [{calibration.yAxis.min}, {calibration.yAxis.max}] (
               {calibration.yAxis.type})
             </p>
-            <p>{calibration.points.length} calibration points</p>
+            <p>{t('extract.calibration.pointsSummary', { count: calibration.points.length })}</p>
           </div>
         )}
       </div>

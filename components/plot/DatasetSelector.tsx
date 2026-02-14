@@ -7,11 +7,13 @@ import { importCSV } from '@/services/exportService'
 import { db } from '@/services/db'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/lib/i18n'
 import type { Dataset } from '@/lib/types'
 
 const MAX_SELECTED = 5
 
 export function DatasetSelector() {
+  const { t } = useTranslation()
   const datasets = useDatasetStore((s) => s.datasets)
   const { addDataset, loadFromDb } = useDatasetStore((s) => s.actions)
   const activePlot = usePlotStore((s) => s.activePlot)
@@ -66,7 +68,7 @@ export function DatasetSelector() {
   return (
     <div className="flex h-full flex-col gap-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold">Datasets</h2>
+        <h2 className="text-sm font-semibold">{t('plot.datasets.title')}</h2>
         <span className="text-xs text-muted-foreground">
           {selectedIds.size}/{MAX_SELECTED}
         </span>
@@ -75,7 +77,7 @@ export function DatasetSelector() {
       <div className="flex-1 overflow-y-auto">
         {datasetList.length === 0 ? (
           <p className="py-4 text-center text-xs text-muted-foreground">
-            No datasets yet. Import CSV or extract from an image.
+            {t('plot.datasets.empty')}
           </p>
         ) : (
           <ul className="flex flex-col gap-1">
@@ -100,7 +102,7 @@ export function DatasetSelector() {
                   />
                   <span className="flex-1 truncate text-sm">{ds.name}</span>
                   <span className="text-xs text-muted-foreground">
-                    {ds.points.length} pts
+                    {ds.points.length} {t('plot.datasets.points')}
                   </span>
                 </li>
               )
@@ -116,7 +118,7 @@ export function DatasetSelector() {
           className="w-full"
           onClick={() => csvInputRef.current?.click()}
         >
-          Import CSV
+          {t('plot.datasets.importCSV')}
         </Button>
         <input
           ref={csvInputRef}

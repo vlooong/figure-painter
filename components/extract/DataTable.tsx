@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useExtractStore } from '@/stores/extractStore'
+import { useTranslation } from '@/lib/i18n'
 
 type SortDir = 'asc' | 'desc' | null
 
@@ -20,6 +21,7 @@ interface DataTableProps {
 }
 
 export function DataTable({ onRowClick }: DataTableProps) {
+  const { t } = useTranslation()
   const editingPoints = useExtractStore((s) => s.editingPoints)
   const selectedPointIndex = useExtractStore((s) => s.selectedPointIndex)
   const { updatePoint, deletePoint, addPoint, sortPointsByX } =
@@ -90,10 +92,10 @@ export function DataTable({ onRowClick }: DataTableProps) {
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold">
-          Data Points ({editingPoints.length})
+          {t('extract.dataTable.title', { count: editingPoints.length })}
         </h3>
         <Button variant="outline" size="xs" onClick={handleAdd}>
-          + Add Point
+          {t('extract.dataTable.addPoint')}
         </Button>
       </div>
 
@@ -106,9 +108,9 @@ export function DataTable({ onRowClick }: DataTableProps) {
                 className="cursor-pointer select-none"
                 onClick={handleSortToggle}
               >
-                X{sortLabel}
+                {t('extract.dataTable.columnX')}{sortLabel}
               </TableHead>
-              <TableHead>Y</TableHead>
+              <TableHead>{t('extract.dataTable.columnY')}</TableHead>
               <TableHead className="w-16" />
             </TableRow>
           </TableHeader>
@@ -119,7 +121,7 @@ export function DataTable({ onRowClick }: DataTableProps) {
                   colSpan={4}
                   className="text-center text-muted-foreground"
                 >
-                  No data points
+                  {t('extract.dataTable.noData')}
                 </TableCell>
               </TableRow>
             ) : (
@@ -178,7 +180,7 @@ export function DataTable({ onRowClick }: DataTableProps) {
                       size="icon-xs"
                       className="text-destructive hover:text-destructive"
                       onClick={() => deletePoint(i)}
-                      aria-label={`Delete point ${i + 1}`}
+                      aria-label={t('extract.dataTable.deletePoint', { n: i + 1 })}
                     >
                       x
                     </Button>

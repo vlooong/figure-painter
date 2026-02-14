@@ -3,8 +3,10 @@
 import { useCallback } from 'react'
 import { Slider } from '@/components/ui/slider'
 import { useExtractStore } from '@/stores/extractStore'
+import { useTranslation } from '@/lib/i18n'
 
 export function ColorPicker() {
+  const { t } = useTranslation()
   const selectedColor = useExtractStore((s) => s.selectedColor)
   const tolerance = useExtractStore((s) => s.tolerance)
   const tool = useExtractStore((s) => s.tool)
@@ -21,18 +23,17 @@ export function ColorPicker() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-sm font-semibold">Color Picker</h3>
+      <h3 className="text-sm font-semibold">{t('extract.colorPicker.title')}</h3>
 
       {!isPickMode && !selectedColor && (
         <p className="text-xs text-muted-foreground">
-          Select the &quot;Color Pick&quot; tool above, then click on the image
-          to sample a color.
+          {t('extract.colorPicker.selectToolInstruction')}
         </p>
       )}
 
       {isPickMode && !selectedColor && (
         <p className="text-xs text-muted-foreground">
-          Click on the image to sample a pixel color.
+          {t('extract.colorPicker.clickInstruction')}
         </p>
       )}
 
@@ -48,7 +49,7 @@ export function ColorPicker() {
               <p className="text-sm font-mono font-medium">
                 {selectedColor.toUpperCase()}
               </p>
-              <p className="text-xs text-muted-foreground">Selected color</p>
+              <p className="text-xs text-muted-foreground">{t('extract.colorPicker.selectedColor')}</p>
             </div>
           </div>
 
@@ -56,7 +57,7 @@ export function ColorPicker() {
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-medium text-muted-foreground">
-                Tolerance
+                {t('extract.colorPicker.tolerance')}
               </label>
               <span className="text-xs font-mono tabular-nums">
                 {tolerance}
@@ -70,7 +71,7 @@ export function ColorPicker() {
               onValueChange={handleToleranceChange}
             />
             <p className="text-xs text-muted-foreground">
-              Lower = stricter color matching. Higher = more permissive.
+              {t('extract.colorPicker.toleranceHelp')}
             </p>
           </div>
         </div>

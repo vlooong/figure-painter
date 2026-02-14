@@ -4,11 +4,13 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { usePlotStore } from '@/stores/plotStore'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
+import { useTranslation } from '@/lib/i18n'
 import type { AxisConfig, PlotConfig } from '@/lib/types'
 
 const DEBOUNCE_MS = 300
 
 export function ChartConfigurator() {
+  const { t } = useTranslation()
   const activePlot = usePlotStore((s) => s.activePlot)
   const { updatePlotConfig } = usePlotStore((s) => s.actions)
 
@@ -147,58 +149,58 @@ export function ChartConfigurator() {
   if (!activePlot) {
     return (
       <div className="p-4 text-sm text-muted-foreground">
-        No active plot configuration.
+        {t('plot.noActiveConfig')}
       </div>
     )
   }
 
   return (
     <div className="flex h-full flex-col gap-4 overflow-y-auto">
-      <h2 className="text-sm font-semibold">Chart Settings</h2>
+      <h2 className="text-sm font-semibold">{t('plot.chartSettings.title')}</h2>
 
       {/* Title */}
-      <FieldGroup label="Title">
+      <FieldGroup label={t('plot.chartSettings.chartTitle')}>
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Chart title"
+          placeholder={t('plot.chartSettings.chartTitlePlaceholder')}
         />
       </FieldGroup>
 
       {/* X Axis */}
       <fieldset className="flex flex-col gap-2 rounded-md border p-3">
         <legend className="px-1 text-xs font-medium text-muted-foreground">
-          X Axis
+          {t('plot.chartSettings.xAxis')}
         </legend>
-        <FieldGroup label="Label">
+        <FieldGroup label={t('plot.chartSettings.label')}>
           <Input
             value={xLabel}
             onChange={(e) => setXLabel(e.target.value)}
-            placeholder="e.g. Time"
+            placeholder={t('plot.chartSettings.placeholderTime')}
           />
         </FieldGroup>
-        <FieldGroup label="Unit">
+        <FieldGroup label={t('plot.chartSettings.unit')}>
           <Input
             value={xUnit}
             onChange={(e) => setXUnit(e.target.value)}
-            placeholder="e.g. s"
+            placeholder={t('plot.chartSettings.placeholderS')}
           />
         </FieldGroup>
         <div className="grid grid-cols-2 gap-2">
-          <FieldGroup label="Min">
+          <FieldGroup label={t('plot.chartSettings.min')}>
             <Input
               type="number"
               value={xMin}
               onChange={(e) => setXMin(e.target.value)}
-              placeholder="auto"
+              placeholder={t('plot.chartSettings.auto')}
             />
           </FieldGroup>
-          <FieldGroup label="Max">
+          <FieldGroup label={t('plot.chartSettings.max')}>
             <Input
               type="number"
               value={xMax}
               onChange={(e) => setXMax(e.target.value)}
-              placeholder="auto"
+              placeholder={t('plot.chartSettings.auto')}
             />
           </FieldGroup>
         </div>
@@ -207,37 +209,37 @@ export function ChartConfigurator() {
       {/* Y Axis */}
       <fieldset className="flex flex-col gap-2 rounded-md border p-3">
         <legend className="px-1 text-xs font-medium text-muted-foreground">
-          Y Axis
+          {t('plot.chartSettings.yAxis')}
         </legend>
-        <FieldGroup label="Label">
+        <FieldGroup label={t('plot.chartSettings.label')}>
           <Input
             value={yLabel}
             onChange={(e) => setYLabel(e.target.value)}
-            placeholder="e.g. Voltage"
+            placeholder={t('plot.chartSettings.placeholderVoltage')}
           />
         </FieldGroup>
-        <FieldGroup label="Unit">
+        <FieldGroup label={t('plot.chartSettings.unit')}>
           <Input
             value={yUnit}
             onChange={(e) => setYUnit(e.target.value)}
-            placeholder="e.g. V"
+            placeholder={t('plot.chartSettings.placeholderV')}
           />
         </FieldGroup>
         <div className="grid grid-cols-2 gap-2">
-          <FieldGroup label="Min">
+          <FieldGroup label={t('plot.chartSettings.min')}>
             <Input
               type="number"
               value={yMin}
               onChange={(e) => setYMin(e.target.value)}
-              placeholder="auto"
+              placeholder={t('plot.chartSettings.auto')}
             />
           </FieldGroup>
-          <FieldGroup label="Max">
+          <FieldGroup label={t('plot.chartSettings.max')}>
             <Input
               type="number"
               value={yMax}
               onChange={(e) => setYMax(e.target.value)}
-              placeholder="auto"
+              placeholder={t('plot.chartSettings.auto')}
             />
           </FieldGroup>
         </div>
@@ -249,44 +251,44 @@ export function ChartConfigurator() {
           checked={dualY}
           onCheckedChange={(checked) => setDualY(checked === true)}
         />
-        <span className="text-sm">Dual Y-Axis</span>
+        <span className="text-sm">{t('plot.chartSettings.dualYAxis')}</span>
       </div>
 
       {/* Y2 Axis (conditional) */}
       {dualY && (
         <fieldset className="flex flex-col gap-2 rounded-md border p-3">
           <legend className="px-1 text-xs font-medium text-muted-foreground">
-            Y2 Axis (Right)
+            {t('plot.chartSettings.y2Axis')}
           </legend>
-          <FieldGroup label="Label">
+          <FieldGroup label={t('plot.chartSettings.label')}>
             <Input
               value={y2Label}
               onChange={(e) => setY2Label(e.target.value)}
-              placeholder="e.g. Current"
+              placeholder={t('plot.chartSettings.placeholderCurrent')}
             />
           </FieldGroup>
-          <FieldGroup label="Unit">
+          <FieldGroup label={t('plot.chartSettings.unit')}>
             <Input
               value={y2Unit}
               onChange={(e) => setY2Unit(e.target.value)}
-              placeholder="e.g. A"
+              placeholder={t('plot.chartSettings.placeholderA')}
             />
           </FieldGroup>
           <div className="grid grid-cols-2 gap-2">
-            <FieldGroup label="Min">
+            <FieldGroup label={t('plot.chartSettings.min')}>
               <Input
                 type="number"
                 value={y2Min}
                 onChange={(e) => setY2Min(e.target.value)}
-                placeholder="auto"
+                placeholder={t('plot.chartSettings.auto')}
               />
             </FieldGroup>
-            <FieldGroup label="Max">
+            <FieldGroup label={t('plot.chartSettings.max')}>
               <Input
                 type="number"
                 value={y2Max}
                 onChange={(e) => setY2Max(e.target.value)}
-                placeholder="auto"
+                placeholder={t('plot.chartSettings.auto')}
               />
             </FieldGroup>
           </div>

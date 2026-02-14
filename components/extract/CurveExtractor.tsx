@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useExtractStore } from '@/stores/extractStore'
+import { useTranslation } from '@/lib/i18n'
 import { extractCurve, hexToRgb } from '@/lib/extraction'
 
 interface CurveExtractorProps {
@@ -10,6 +11,7 @@ interface CurveExtractorProps {
 }
 
 export function CurveExtractor({ getImageData }: CurveExtractorProps) {
+  const { t } = useTranslation()
   const selectedColor = useExtractStore((s) => s.selectedColor)
   const tolerance = useExtractStore((s) => s.tolerance)
   const calibration = useExtractStore((s) => s.calibration)
@@ -43,15 +45,15 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-sm font-semibold">Curve Extraction</h3>
+      <h3 className="text-sm font-semibold">{t('extract.curveExtractor.title')}</h3>
 
       {!canExtract && (
         <p className="text-xs text-muted-foreground">
           {!selectedColor && !calibration
-            ? 'Select a color and calibrate axes first.'
+            ? t('extract.curveExtractor.selectColorAndCalibrate')
             : !selectedColor
-              ? 'Select a color from the image first.'
-              : 'Calibrate the axes first.'}
+              ? t('extract.curveExtractor.selectColorFirst')
+              : t('extract.curveExtractor.calibrateFirst')}
         </p>
       )}
 
@@ -65,7 +67,7 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
             />
             <span className="font-mono">{selectedColor.toUpperCase()}</span>
             <span className="text-muted-foreground">
-              tol: {tolerance}
+              {t('extract.curveExtractor.tolerance')}{tolerance}
             </span>
           </div>
 
@@ -74,7 +76,7 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
             onClick={handleExtract}
             disabled={isExtracting}
           >
-            {isExtracting ? 'Extracting...' : 'Extract Curve'}
+            {isExtracting ? t('extract.curveExtractor.extracting') : t('extract.curveExtractor.extractCurve')}
           </Button>
         </div>
       )}
@@ -83,7 +85,7 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
         <div className="flex flex-col gap-2">
           <div className="rounded-md border bg-muted/50 p-2 text-xs">
             <p className="font-medium">
-              Extracted {extractedPoints.length} points
+              {t('extract.curveExtractor.extractedPoints', { n: extractedPoints.length })}
             </p>
             <p className="text-muted-foreground">
               X: [{extractedPoints[0].x.toFixed(2)},{' '}
@@ -91,7 +93,7 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
             </p>
           </div>
           <Button variant="outline" size="sm" onClick={handleClear}>
-            Clear Extraction
+            {t('extract.curveExtractor.clearExtraction')}
           </Button>
         </div>
       )}

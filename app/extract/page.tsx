@@ -18,11 +18,13 @@ import { PointEditor } from '@/components/extract/PointEditor'
 import { Button } from '@/components/ui/button'
 import { useExtractStore } from '@/stores/extractStore'
 import { useDatasetStore } from '@/stores/datasetStore'
+import { useTranslation } from '@/lib/i18n'
 import { db } from '@/services/db'
 import { exportCSV, exportExcel, importCSV } from '@/services/exportService'
 import type { Dataset } from '@/lib/types'
 
 export default function ExtractPage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const calibratorRef = useRef<AxisCalibratorHandle>(null)
   const canvasRef = useRef<ImageCanvasHandle>(null)
@@ -188,7 +190,7 @@ export default function ExtractPage() {
         <div className="flex flex-col gap-4">
           {/* Tool selector */}
           <div>
-            <h2 className="mb-2 text-sm font-semibold">Tools</h2>
+            <h2 className="mb-2 text-sm font-semibold">{t('extract.tools.title')}</h2>
             <ToolSelector />
           </div>
 
@@ -204,20 +206,20 @@ export default function ExtractPage() {
           {/* Export/Import toolbar */}
           {hasPoints && (
             <div>
-              <h2 className="mb-2 text-sm font-semibold">Export / Import</h2>
+              <h2 className="mb-2 text-sm font-semibold">{t('extract.exportImport.title')}</h2>
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" size="sm" onClick={handleExportCSV}>
-                  Export CSV
+                  {t('extract.exportImport.exportCSV')}
                 </Button>
                 <Button variant="outline" size="sm" onClick={handleExportExcel}>
-                  Export Excel
+                  {t('extract.exportImport.exportExcel')}
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => csvInputRef.current?.click()}
                 >
-                  Import CSV
+                  {t('extract.exportImport.importCSV')}
                 </Button>
                 <Button
                   variant="outline"
@@ -225,7 +227,7 @@ export default function ExtractPage() {
                   onClick={undoLastMove}
                   disabled={undoStack.length === 0}
                 >
-                  Undo (Ctrl+Z)
+                  {t('extract.exportImport.undo')}
                 </Button>
                 <input
                   ref={csvInputRef}
@@ -242,13 +244,13 @@ export default function ExtractPage() {
           {hasPoints && (
             <div className="flex flex-col gap-2">
               <Button onClick={handleSaveDataset}>
-                Save as Dataset
+                {t('extract.saveDataset')}
               </Button>
               <Button
                 onClick={handleSendToPlot}
                 className="bg-green-600 text-white hover:bg-green-700"
               >
-                Send to Plot
+                {t('extract.sendToPlot')}
               </Button>
             </div>
           )}
@@ -259,14 +261,15 @@ export default function ExtractPage() {
 }
 
 function ToolSelector() {
+  const { t } = useTranslation()
   const tool = useExtractStore((s) => s.tool)
   const { setTool } = useExtractStore((s) => s.actions)
 
   const tools = [
-    { id: 'select' as const, label: 'Select' },
-    { id: 'calibrate' as const, label: 'Calibrate' },
-    { id: 'pick' as const, label: 'Color Pick' },
-    { id: 'draw' as const, label: 'Draw' },
+    { id: 'select' as const, label: t('extract.tools.select') },
+    { id: 'calibrate' as const, label: t('extract.tools.calibrate') },
+    { id: 'pick' as const, label: t('extract.tools.colorPick') },
+    { id: 'draw' as const, label: t('extract.tools.draw') },
   ]
 
   return (

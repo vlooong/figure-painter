@@ -5,12 +5,14 @@ import type { EChartsType } from 'echarts/core'
 import { useECharts, type EChartsOption } from '@/hooks/useECharts'
 import { usePlotStore, getEffectiveTemplate } from '@/stores/plotStore'
 import { useDatasetStore } from '@/stores/datasetStore'
+import { useTranslation } from '@/lib/i18n'
 
 export interface ChartCanvasHandle {
   getChartInstance: () => EChartsType | null
 }
 
 export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_props, ref) {
+  const { t } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
 
   const activePlot = usePlotStore((s) => s.activePlot)
@@ -29,7 +31,7 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
   const option: EChartsOption = useMemo(() => {
     if (!activePlot) {
       return {
-        title: { text: 'No active plot', left: 'center', top: 'middle' },
+        title: { text: t('plot.noActivePlot'), left: 'center', top: 'middle' },
       }
     }
 
@@ -187,7 +189,7 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
         ? { elements: graphicElements }
         : undefined,
     }
-  }, [activePlot, selectedDatasets])
+  }, [activePlot, selectedDatasets, t])
 
   const { chartRef, setOption } = useECharts(containerRef, option)
 

@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
+import { useTranslation } from '@/lib/i18n'
 import type { ChartTemplate } from '@/lib/types'
 
 export function StyleTemplatePanel() {
+  const { t } = useTranslation()
   const activePlot = usePlotStore((s) => s.activePlot)
   const { applyTemplate, setCustomOverrides, resetToTemplate } = usePlotStore(
     (s) => s.actions
@@ -86,7 +88,7 @@ export function StyleTemplatePanel() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-sm font-semibold">Style Templates</h2>
+      <h2 className="text-sm font-semibold">{t('plot.styleTemplates.title')}</h2>
 
       {/* Template cards grid */}
       <div className="grid grid-cols-2 gap-2">
@@ -96,6 +98,7 @@ export function StyleTemplatePanel() {
             template={tpl}
             isActive={tpl.id === activeTemplateId}
             onSelect={handleApply}
+            t={t}
           />
         ))}
       </div>
@@ -104,13 +107,13 @@ export function StyleTemplatePanel() {
       {activeTemplateId && (
         <fieldset className="flex flex-col gap-3 rounded-md border p-3">
           <legend className="px-1 text-xs font-medium text-muted-foreground">
-            Custom Overrides
+            {t('plot.styleTemplates.customOverrides')}
           </legend>
 
           {/* Font size slider */}
           <div className="flex flex-col gap-1">
             <label className="text-xs text-muted-foreground">
-              Title Font Size: {currentFontSize || baseTemplate?.fontSize.title || 14}pt
+              {t('plot.styleTemplates.titleFontSize', { n: currentFontSize || baseTemplate?.fontSize.title || 14 })}
             </label>
             <Slider
               min={4}
@@ -124,7 +127,7 @@ export function StyleTemplatePanel() {
           {/* Line width slider */}
           <div className="flex flex-col gap-1">
             <label className="text-xs text-muted-foreground">
-              Line Width: {(currentLineWidth || baseTemplate?.lineWidth || 1.5).toFixed(1)}
+              {t('plot.styleTemplates.lineWidth', { n: (currentLineWidth || baseTemplate?.lineWidth || 1.5).toFixed(1) })}
             </label>
             <Slider
               min={3}
@@ -142,7 +145,7 @@ export function StyleTemplatePanel() {
           {/* Primary color input */}
           <div className="flex flex-col gap-1">
             <label className="text-xs text-muted-foreground">
-              Primary Color
+              {t('plot.styleTemplates.primaryColor')}
             </label>
             <Input
               type="color"
@@ -160,7 +163,7 @@ export function StyleTemplatePanel() {
               checked={effectiveGridShow}
               onCheckedChange={handleGridToggle}
             />
-            <span className="text-xs text-muted-foreground">Show Grid</span>
+            <span className="text-xs text-muted-foreground">{t('plot.styleTemplates.showGrid')}</span>
           </div>
 
           {/* Reset button */}
@@ -170,7 +173,7 @@ export function StyleTemplatePanel() {
             className="w-full"
             onClick={resetToTemplate}
           >
-            Reset to Template
+            {t('plot.styleTemplates.resetToTemplate')}
           </Button>
         </fieldset>
       )}
@@ -184,10 +187,12 @@ function TemplateCard({
   template,
   isActive,
   onSelect,
+  t,
 }: {
   template: ChartTemplate
   isActive: boolean
   onSelect: (id: string) => void
+  t: (key: string, vars?: Record<string, string | number>) => string
 }) {
   return (
     <button
@@ -197,9 +202,9 @@ function TemplateCard({
       }`}
       onClick={() => onSelect(template.id)}
     >
-      <span className="text-xs font-medium">{template.name}</span>
+      <span className="text-xs font-medium">{t(`templates.${template.id}.name`)}</span>
       <span className="text-[10px] leading-tight text-muted-foreground">
-        {template.description}
+        {t(`templates.${template.id}.description`)}
       </span>
       {/* Color preview dots */}
       <div className="flex gap-1">

@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useExtractStore } from '@/stores/extractStore'
+import { useTranslation } from '@/lib/i18n'
 import { useCanvasInteraction } from '@/hooks/useCanvasInteraction'
 import { dataToPixel } from '@/lib/calibration'
 import { findMatchingPixels, hexToRgb } from '@/lib/extraction'
@@ -33,6 +34,7 @@ interface ImageCanvasProps {
 
 export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
   function ImageCanvas({ onCanvasClick }, ref) {
+  const { t } = useTranslation()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const imageRef = useRef<HTMLImageElement | null>(null)
@@ -141,7 +143,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
         // Label
         ctx.fillStyle = '#ef4444'
         ctx.font = '12px sans-serif'
-        ctx.fillText(`P${i + 1}`, px + 10, py - 4)
+        ctx.fillText(t('extract.imageCanvas.pointLabel', { n: i + 1 }), px + 10, py - 4)
       })
       ctx.restore()
     }
@@ -155,7 +157,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
       ctx.fillRect(8, canvas.height - 28, 160, 22)
       ctx.fillStyle = '#ffffff'
       ctx.font = '12px monospace'
-      ctx.fillText(`pixel: (${imgX}, ${imgY})`, 14, canvas.height - 12)
+      ctx.fillText(t('extract.imageCanvas.pixelCoord', { x: imgX, y: imgY }), 14, canvas.height - 12)
       ctx.restore()
     }
 
@@ -209,7 +211,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
       }
       ctx.restore()
     }
-  }, [zoom, offset, calibration, mousePos, selectedColor, tolerance, extractedPoints])
+  }, [zoom, offset, calibration, mousePos, selectedColor, tolerance, extractedPoints, t])
 
   useEffect(() => {
     draw()
@@ -385,7 +387,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
             size="sm"
             onClick={() => fileInputRef.current?.click()}
           >
-            Upload Image
+            {t('extract.imageCanvas.uploadImage')}
           </Button>
           <input
             ref={fileInputRef}
@@ -406,8 +408,8 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
         {!image ? (
           <div className="flex h-full items-center justify-center text-muted-foreground">
             <div className="text-center">
-              <p className="text-lg">Drop image here or click Upload</p>
-              <p className="text-sm">Supports PNG, JPG, BMP, WebP</p>
+              <p className="text-lg">{t('extract.imageCanvas.dropHere')}</p>
+              <p className="text-sm">{t('extract.imageCanvas.supportedFormats')}</p>
             </div>
           </div>
         ) : null}
@@ -431,7 +433,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
           <span>
             {image.name} ({image.width} x {image.height})
           </span>
-          <span>Zoom: {(zoom * 100).toFixed(0)}%</span>
+          <span>{t('extract.imageCanvas.zoom', { value: (zoom * 100).toFixed(0) })}</span>
           <Button
             variant="ghost"
             size="xs"
@@ -442,7 +444,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
               setOffset({ x: 0, y: 0 })
             }}
           >
-            Clear
+            {t('extract.imageCanvas.clear')}
           </Button>
         </div>
       )}

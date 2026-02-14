@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { useExtractStore } from '@/stores/extractStore'
+import { useTranslation } from '@/lib/i18n'
 import { dataToPixel } from '@/lib/calibration'
 
 interface OverlayVerifierProps {
@@ -18,6 +19,7 @@ interface OverlayVerifierProps {
  * positioned absolutely over the ImageCanvas.
  */
 export function OverlayVerifier({ zoom, offset }: OverlayVerifierProps) {
+  const { t } = useTranslation()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -104,11 +106,11 @@ export function OverlayVerifier({ zoom, offset }: OverlayVerifierProps) {
           size="xs"
           onClick={() => setVisible(!visible)}
         >
-          {visible ? 'Hide Overlay' : 'Show Overlay'}
+          {visible ? t('extract.overlay.hideOverlay') : t('extract.overlay.showOverlay')}
         </Button>
         <div className="flex flex-1 items-center gap-2">
           <span className="text-xs text-muted-foreground whitespace-nowrap">
-            Opacity: {opacity}%
+            {t('extract.overlay.opacity', { value: opacity })}
           </span>
           <Slider
             min={0}

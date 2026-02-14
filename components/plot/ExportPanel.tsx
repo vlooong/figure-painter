@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { usePlotStore, getEffectiveTemplate } from '@/stores/plotStore'
 import { exportChartPNG, exportChartSVG } from '@/services/exportService'
+import { useTranslation } from '@/lib/i18n'
 import type { ChartCanvasHandle } from '@/components/plot/ChartCanvas'
 
 const DPI_OPTIONS = [150, 300, 600]
@@ -14,6 +15,7 @@ interface ExportPanelProps {
 }
 
 export function ExportPanel({ chartCanvasRef }: ExportPanelProps) {
+  const { t } = useTranslation()
   const activePlot = usePlotStore((s) => s.activePlot)
   const template = activePlot ? getEffectiveTemplate(activePlot) : null
 
@@ -50,18 +52,18 @@ export function ExportPanel({ chartCanvasRef }: ExportPanelProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-sm font-semibold">Export Chart</h3>
+      <h3 className="text-sm font-semibold">{t('plot.exportChart.title')}</h3>
 
       {/* Filename input */}
       <div>
         <label className="mb-1 block text-xs text-muted-foreground">
-          Filename
+          {t('plot.exportChart.filename')}
         </label>
         <Input
           type="text"
           value={filename}
           onChange={(e) => setFilename(e.target.value)}
-          placeholder="chart"
+          placeholder={t('plot.exportChart.filenamePlaceholder')}
           className="h-8 text-sm"
         />
       </div>
@@ -69,7 +71,7 @@ export function ExportPanel({ chartCanvasRef }: ExportPanelProps) {
       {/* DPI selector */}
       <div>
         <label className="mb-1 block text-xs text-muted-foreground">
-          DPI
+          {t('plot.exportChart.dpi')}
         </label>
         <select
           value={dpi}
@@ -78,7 +80,7 @@ export function ExportPanel({ chartCanvasRef }: ExportPanelProps) {
         >
           {DPI_OPTIONS.map((d) => (
             <option key={d} value={d}>
-              {d} DPI
+              {t('plot.exportChart.dpiOption', { d })}
             </option>
           ))}
         </select>
@@ -86,10 +88,10 @@ export function ExportPanel({ chartCanvasRef }: ExportPanelProps) {
 
       {/* Export dimensions info */}
       <p className="text-xs text-muted-foreground">
-        Template size: {exportWidth} x {exportHeight} px
+        {t('plot.exportChart.templateSize', { w: exportWidth, h: exportHeight })}
         {dpi !== 96 && (
           <span className="ml-1">
-            (output: {Math.round(exportWidth * dpi / 96)} x {Math.round(exportHeight * dpi / 96)} px)
+            {t('plot.exportChart.outputSize', { w: Math.round(exportWidth * dpi / 96), h: Math.round(exportHeight * dpi / 96) })}
           </span>
         )}
       </p>
@@ -97,10 +99,10 @@ export function ExportPanel({ chartCanvasRef }: ExportPanelProps) {
       {/* Export buttons */}
       <div className="flex gap-2">
         <Button variant="outline" size="sm" onClick={handleExportPNG} className="flex-1">
-          Export PNG
+          {t('plot.exportChart.exportPNG')}
         </Button>
         <Button variant="outline" size="sm" onClick={handleExportSVG} className="flex-1">
-          Export SVG
+          {t('plot.exportChart.exportSVG')}
         </Button>
       </div>
     </div>

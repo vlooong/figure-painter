@@ -152,6 +152,40 @@ export interface Translations {
       exportPNG: string
       exportSVG: string
     }
+    advancedConfig: {
+      title: string
+      dataPoints: string
+      showSymbol: string
+      symbolSize: string
+      symbolShape: string
+      shapeCircle: string
+      shapeRect: string
+      shapeTriangle: string
+      shapeDiamond: string
+      shapeNone: string
+      legend: string
+      legendVisible: string
+      legendPosition: string
+      posTop: string
+      posBottom: string
+      posLeft: string
+      posRight: string
+      legendOrientation: string
+      orientHorizontal: string
+      orientVertical: string
+      gridLines: string
+      showGridLines: string
+      gridLineStyle: string
+      styleSolid: string
+      styleDashed: string
+      styleDotted: string
+      lineStyle: string
+      lineWidth: string
+      lineType: string
+      smooth: string
+      axisLabels: string
+      axisFontSize: string
+    }
   }
   templates: {
     default: { name: string; description: string }

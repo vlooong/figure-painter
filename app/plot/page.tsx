@@ -6,6 +6,7 @@ import { ChartCanvas, type ChartCanvasHandle } from '@/components/plot/ChartCanv
 import { DatasetSelector } from '@/components/plot/DatasetSelector'
 import { ChartConfigurator } from '@/components/plot/ChartConfigurator'
 import { StyleTemplatePanel } from '@/components/plot/StyleTemplatePanel'
+import { AdvancedConfigPanel } from '@/components/plot/AdvancedConfigPanel'
 import { ExportPanel } from '@/components/plot/ExportPanel'
 import { usePlotStore } from '@/stores/plotStore'
 import { TEMPLATES } from '@/lib/templates'
@@ -64,6 +65,9 @@ function PlotPageContent() {
         <ChartConfigurator />
         <div className="mt-4 border-t pt-4">
           <StyleTemplatePanel />
+        </div>
+        <div className="mt-4 border-t pt-4">
+          <AdvancedConfigPanel />
         </div>
         <div className="mt-4 border-t pt-4">
           <ExportPanel chartCanvasRef={chartCanvasRef} />

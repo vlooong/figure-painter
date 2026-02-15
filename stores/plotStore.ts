@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { PlotConfig, ChartTemplate } from '@/lib/types'
+import type { PlotConfig, ChartTemplate, AdvancedConfig } from '@/lib/types'
 import { getTemplateById } from '@/lib/templates'
 
 interface PlotActions {
@@ -18,6 +18,8 @@ interface PlotActions {
   applyTemplate: (templateId: string) => void
   setCustomOverrides: (overrides: Partial<ChartTemplate>) => void
   resetToTemplate: () => void
+  // Advanced config
+  updateAdvancedConfig: (config: Partial<AdvancedConfig>) => void
 }
 
 interface PlotStore {
@@ -37,6 +39,7 @@ function makeDefaultPlot(): PlotConfig {
     datasetIds: [],
     templateId: '',
     customOverrides: {},
+    advancedConfig: {},
     createdAt: Date.now(),
     updatedAt: Date.now(),
   }
@@ -201,6 +204,20 @@ export const usePlotStore = create<PlotStore>()((set, get) => ({
       const updated: PlotConfig = {
         ...plot,
         customOverrides: {},
+        updatedAt: Date.now(),
+      }
+      const next = new Map(state.plots)
+      next.set(updated.id, updated)
+      set({ plots: next, activeId: updated.id, activePlot: updated })
+    },
+
+    updateAdvancedConfig: (config) => {
+      const state = get()
+      const plot = state.activePlot
+      if (!plot) return
+      const updated: PlotConfig = {
+        ...plot,
+        advancedConfig: { ...plot.advancedConfig, ...config },
         updatedAt: Date.now(),
       }
       const next = new Map(state.plots)

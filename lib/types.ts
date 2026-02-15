@@ -76,6 +76,27 @@ export interface ChartTemplate {
   }
 }
 
+// ---- Advanced Chart Configuration ----
+export interface AdvancedConfig {
+  // Data Points
+  showSymbol?: boolean
+  symbolSize?: number
+  symbolShape?: 'circle' | 'rect' | 'triangle' | 'diamond' | 'none'
+  // Legend
+  legendPosition?: 'top' | 'bottom' | 'left' | 'right'
+  legendVisible?: boolean
+  legendOrientation?: 'horizontal' | 'vertical'
+  // Grid Lines
+  showGridLines?: boolean
+  gridLineStyle?: 'solid' | 'dashed' | 'dotted'
+  // Line Style
+  lineWidth?: number
+  lineType?: 'solid' | 'dashed' | 'dotted'
+  smooth?: boolean
+  // Axis Labels
+  axisFontSize?: number
+}
+
 // ---- Plot Configuration ----
 export interface PlotConfig {
   id: string
@@ -86,6 +107,7 @@ export interface PlotConfig {
   datasetIds: string[]
   templateId: string
   customOverrides: Partial<ChartTemplate>
+  advancedConfig?: AdvancedConfig
   createdAt: number
   updatedAt: number
 }

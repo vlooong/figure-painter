@@ -37,6 +37,7 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
     }
 
     const template = getEffectiveTemplate(activePlot)
+    const adv = activePlot.advancedConfig ?? {}
 
     const series = selectedDatasets.map((ds, idx) => ({
       type: 'line' as const,
@@ -44,22 +45,25 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
       data: ds.points.map((p) => [p.x, p.y]),
       lineStyle: {
         color: ds.color,
-        width: template?.lineWidth ?? 1.5,
+        width: adv.lineWidth ?? template?.lineWidth ?? 1.5,
+        type: adv.lineType ?? undefined,
       },
       itemStyle: { color: ds.color },
-      symbolSize: 8,
-      symbol: 'circle' as const,
+      showSymbol: adv.showSymbol ?? true,
+      symbolSize: adv.symbolSize ?? 8,
+      symbol: (adv.symbolShape ?? 'circle') as string,
+      smooth: adv.smooth ?? false,
     }))
 
-    // Shared axis style derived from template
+    // Shared axis style derived from template, with advancedConfig overrides
     const splitLineConfig = template
       ? {
-          show: template.axisStyle.showGrid,
+          show: adv.showGridLines ?? template.axisStyle.showGrid,
           lineStyle: {
-            type: template.axisStyle.gridStyle as 'solid' | 'dashed' | 'dotted',
+            type: (adv.gridLineStyle ?? template.axisStyle.gridStyle) as 'solid' | 'dashed' | 'dotted',
           },
         }
-      : { show: true, lineStyle: { type: 'dashed' as const } }
+      : { show: adv.showGridLines ?? true, lineStyle: { type: (adv.gridLineStyle ?? 'dashed') as const } }
 
     const axisTickConfig = template
       ? { inside: template.axisStyle.tickInside }
@@ -76,8 +80,8 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
           : undefined,
         min: activePlot.yAxis.min !== -Infinity ? activePlot.yAxis.min : undefined,
         max: activePlot.yAxis.max !== Infinity ? activePlot.yAxis.max : undefined,
-        nameTextStyle: { fontSize: template?.fontSize.axis },
-        axisLabel: { fontSize: template?.fontSize.tick },
+        nameTextStyle: { fontSize: adv.axisFontSize ?? template?.fontSize.axis },
+        axisLabel: { fontSize: adv.axisFontSize ?? template?.fontSize.tick },
         splitLine: splitLineConfig,
         axisTick: axisTickConfig,
         axisLine: axisLineConfig,
@@ -98,8 +102,8 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
           activePlot.yAxis2.max !== Infinity
             ? activePlot.yAxis2.max
             : undefined,
-        nameTextStyle: { fontSize: template?.fontSize.axis },
-        axisLabel: { fontSize: template?.fontSize.tick },
+        nameTextStyle: { fontSize: adv.axisFontSize ?? template?.fontSize.axis },
+        axisLabel: { fontSize: adv.axisFontSize ?? template?.fontSize.tick },
         splitLine: splitLineConfig,
         axisTick: axisTickConfig,
         axisLine: axisLineConfig,
@@ -124,7 +128,12 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
         trigger: 'item',
       },
       legend: {
-        bottom: 0,
+        show: adv.legendVisible ?? true,
+        ...(adv.legendPosition === 'top' ? { top: 0 } :
+           adv.legendPosition === 'left' ? { left: 0 } :
+           adv.legendPosition === 'right' ? { right: 0 } :
+           { bottom: 0 }),
+        orient: adv.legendOrientation ?? 'horizontal',
         textStyle: template
           ? { fontSize: template.fontSize.legend }
           : undefined,
@@ -150,10 +159,10 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
             ? activePlot.xAxis.max
             : undefined,
         nameTextStyle: template
-          ? { fontSize: template.fontSize.axis }
+          ? { fontSize: adv.axisFontSize ?? template.fontSize.axis }
           : undefined,
         axisLabel: template
-          ? { fontSize: template.fontSize.tick }
+          ? { fontSize: adv.axisFontSize ?? template.fontSize.tick }
           : undefined,
         splitLine: splitLineConfig,
         axisTick: axisTickConfig,

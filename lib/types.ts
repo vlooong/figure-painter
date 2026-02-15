@@ -90,6 +90,50 @@ export interface PlotConfig {
   updatedAt: number
 }
 
+// ---- Benchmark ----
+export interface TaskCategory {
+  id: string
+  name: string
+  nameZh: string
+}
+
+export interface BenchmarkDataset {
+  id: string
+  name: string
+  fullName: string
+  fullNameZh: string
+  domain: string
+  domainZh: string
+  taskIds: string[]
+  description: string
+  descriptionZh: string
+  features?: number
+  frequency?: string
+  source?: string
+}
+
+export interface BenchmarkTable {
+  datasetId: string
+  taskId: string
+  metricNames: string[]
+  lowerIsBetter: boolean[]
+  settingLabel: string
+  settingLabelZh: string
+  settings: BenchmarkSetting[]
+}
+
+export interface BenchmarkSetting {
+  name: string
+  results: BenchmarkResult[]
+}
+
+export interface BenchmarkResult {
+  algorithm: string
+  values: (number | null)[]
+  paper?: string
+  year?: number
+}
+
 // ---- Extraction State ----
 export type ExtractTool = 'select' | 'pick' | 'calibrate' | 'draw'
 

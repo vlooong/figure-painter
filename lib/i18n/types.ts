@@ -15,12 +15,14 @@ export interface Translations {
     home: string
     extract: string
     plot: string
+    benchmark: string
   }
   home: {
     title: string
     subtitle: string
     extractLink: string
     plotLink: string
+    benchmarkLink: string
   }
   extract: {
     tools: {
@@ -156,5 +158,28 @@ export interface Translations {
     vibrant: { name: string; description: string }
     muted: { name: string; description: string }
     highContrast: { name: string; description: string }
+  }
+  benchmark: {
+    title: string
+    subtitle: string
+    search: string
+    allTasks: string
+    domain: string
+    features: string
+    frequency: string
+    algorithm: string
+    paper: string
+    year: string
+    backToList: string
+    noResults: string
+    copyAs: string
+    copyLaTeX: string
+    copyTSV: string
+    copyMarkdown: string
+    copied: string
+    best: string
+    datasets: string
+    settingLabel: string
+    source: string
   }
 }

@@ -16,6 +16,9 @@ export default function Home() {
         <a href="/plot" className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">
           {t('home.plotLink')}
         </a>
+        <a href="/benchmark" className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+          {t('home.benchmarkLink')}
+        </a>
       </div>
     </main>
   )

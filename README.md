@@ -18,6 +18,12 @@ A web-based tool for extracting data from scientific paper figures and creating 
 
 ![Chart Export](docs/screenshots/plot-page-export.png)
 
+### Benchmark Query
+
+![Benchmark List View](docs/screenshots/benchmark-list-view.png)
+
+![Benchmark Detail View](docs/screenshots/benchmark-detail-view.png)
+
 ## Features
 
 ### Data Extraction
@@ -28,6 +34,9 @@ A web-based tool for extracting data from scientific paper figures and creating 
 - **Interactive Editing** — Drag points on canvas or edit values in the data table
 - **Overlay Verification** — Overlay extracted curve on original image to verify accuracy
 - **Export** — Export data as CSV or Excel, or send directly to the plotting module
+- **Collapsible Sidebar** — Toggle left-side extraction panels to maximize canvas space
+- **Calibration Visualization** — Visual feedback showing calibration point positions on the image
+- **Sample Step Control** — Adjust point density during extraction for optimal data resolution
 
 ### Scientific Plotting
 - **ECharts Engine** — Interactive chart rendering with real-time preview
@@ -40,6 +49,17 @@ A web-based tool for extracting data from scientific paper figures and creating 
   - **Science** — Minimal style for Science journal figures
 - **Custom Overrides** — Adjust title font size, line width, colors, grid visibility
 - **Chart Export** — Export as PNG or SVG with configurable DPI (72–600)
+- **Draggable Points** — Drag data points directly on the chart to adjust values interactively
+- **Auto-Fit Canvas** — Chart canvas automatically adapts to container resizing
+- **Unlimited Datasets** — No limit on number of datasets per chart
+- **Dataset Copy** — Duplicate datasets with one click for quick comparison variants
+
+### Benchmark Query
+- **Dataset Search** — Query time series prediction benchmark datasets by keyword with instant filtering
+- **Task Filtering** — Filter by task categories (forecasting, classification, anomaly detection, etc.)
+- **Algorithm Comparison** — View algorithm performance metrics (MSE, MAE) across multiple prediction horizons
+- **Paper References** — Direct links to original papers for each algorithm result
+- **Export Results** — Copy benchmark tables as LaTeX, TSV, or Markdown for paper writing
 
 ### General
 - **i18n** — Full Chinese and English language support
@@ -95,14 +115,17 @@ The static site is exported to the `out/` directory and can be deployed to any s
 
 ```
 figure-painter/
-├── app/                    # Next.js pages (home, extract, plot)
+├── app/                    # Next.js pages (home, extract, plot, benchmark)
+│   └── benchmark/          # Benchmark query page
 ├── components/
+│   ├── benchmark/          # Benchmark query components
 │   ├── extract/            # Data extraction components
 │   ├── plot/               # Plotting components
 │   ├── shared/             # Navigation, Providers, LanguageSwitcher
 │   └── ui/                 # shadcn/ui primitives
 ├── lib/
 │   ├── i18n/               # Internationalization (en, zh)
+│   ├── benchmarkData.ts    # Benchmark dataset definitions
 │   ├── templates.ts        # Chart style templates
 │   └── types.ts            # TypeScript type definitions
 ├── stores/                 # Zustand stores

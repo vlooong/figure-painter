@@ -18,6 +18,12 @@
 
 ![图表导出](docs/screenshots/plot-page-export.png)
 
+### Benchmark 查询
+
+![Benchmark 列表视图](docs/screenshots/benchmark-list-view.png)
+
+![Benchmark 详情视图](docs/screenshots/benchmark-detail-view.png)
+
 ## 功能特性
 
 ### 数据提取
@@ -28,6 +34,9 @@
 - **交互式编辑** — 在画布上拖拽数据点，或在数据表中直接编辑数值
 - **叠图验证** — 将提取的曲线叠加到原图上进行对比验证
 - **数据导出** — 导出为 CSV 或 Excel 格式，或直接发送到绘图模块
+- **可折叠侧边栏** — 切换左侧提取面板，最大化画布空间
+- **标定可视化** — 在图像上直观显示标定点位置
+- **采样步长控制** — 提取时调节数据点密度，获取最优数据分辨率
 
 ### 科研绘图
 - **ECharts 引擎** — 交互式图表渲染，实时预览
@@ -40,6 +49,17 @@
   - **Science** — 适用于 Science 期刊的简约风格
 - **自定义覆盖** — 调整标题字号、线宽、配色、网格显示
 - **图表导出** — 导出为 PNG 或 SVG，DPI 可配置（72–600）
+- **数据点拖拽** — 在图表上直接拖拽数据点调整数值
+- **画布自适应** — 图表画布自动适配容器尺寸变化
+- **无限数据集** — 取消每图数据集数量的限制
+- **数据集复制** — 一键复制数据集，方便快速对比不同变体
+
+### Benchmark 查询
+- **数据集搜索** — 按关键词查询时序预测基准数据集，支持即时过滤
+- **任务类型筛选** — 按任务类别筛选（预测、分类、异常检测等）
+- **算法性能对比** — 查看各算法在多个预测长度上的性能指标（MSE、MAE）
+- **论文引用** — 提供每个算法结果的原始论文链接
+- **结果导出** — 将对比表格复制为 LaTeX、TSV 或 Markdown 格式，方便论文写作
 
 ### 通用特性
 - **国际化** — 完整的中英文双语支持
@@ -95,14 +115,17 @@ npm run build
 
 ```
 figure-painter/
-├── app/                    # Next.js 页面（首页、提取、绘图）
+├── app/                    # Next.js 页面（首页、提取、绘图、Benchmark）
+│   └── benchmark/          # Benchmark 查询页面
 ├── components/
+│   ├── benchmark/          # Benchmark 查询组件
 │   ├── extract/            # 数据提取组件
 │   ├── plot/               # 绘图组件
 │   ├── shared/             # 导航栏、Provider、语言切换
 │   └── ui/                 # shadcn/ui 基础组件
 ├── lib/
 │   ├── i18n/               # 国际化（英文、中文）
+│   ├── benchmarkData.ts    # Benchmark 数据集定义
 │   ├── templates.ts        # 图表风格模板
 │   └── types.ts            # TypeScript 类型定义
 ├── stores/                 # Zustand 状态管理

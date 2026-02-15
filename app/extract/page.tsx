@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   ImageCanvas,
@@ -16,6 +16,7 @@ import { DataTable } from '@/components/extract/DataTable'
 import { OverlayVerifier } from '@/components/extract/OverlayVerifier'
 import { PointEditor } from '@/components/extract/PointEditor'
 import { Button } from '@/components/ui/button'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { useExtractStore } from '@/stores/extractStore'
 import { useDatasetStore } from '@/stores/datasetStore'
 import { useTranslation } from '@/lib/i18n'
@@ -161,6 +162,43 @@ export default function ExtractPage() {
 
   const hasPoints = editingPoints.length > 0
 
+  // Collapsible panel state: track which panels are manually toggled
+  // Key: tool id that maps to a panel ('calibrate' | 'pick' | 'draw')
+  type PanelId = 'calibrate' | 'pick' | 'draw'
+  const [manualExpand, setManualExpand] = useState<Record<PanelId, boolean>>({
+    calibrate: false,
+    pick: false,
+    draw: false,
+  })
+
+  // When tool changes, reset manual overrides so only the active panel auto-expands
+  useEffect(() => {
+    setManualExpand({ calibrate: false, pick: false, draw: false })
+  }, [tool])
+
+  // A panel is expanded if it matches the active tool OR was manually toggled open
+  const isPanelExpanded = useCallback(
+    (panelId: PanelId) => {
+      if (manualExpand[panelId]) return true
+      return tool === panelId
+    },
+    [tool, manualExpand]
+  )
+
+  const togglePanel = useCallback((panelId: PanelId) => {
+    setManualExpand((prev) => ({ ...prev, [panelId]: !prev[panelId] }))
+  }, [])
+
+  const panels = useMemo(
+    () =>
+      [
+        { id: 'calibrate' as PanelId, titleKey: 'extract.calibration.title' as const },
+        { id: 'pick' as PanelId, titleKey: 'extract.colorPicker.title' as const },
+        { id: 'draw' as PanelId, titleKey: 'extract.curveExtractor.title' as const },
+      ] as const,
+    []
+  )
+
   return (
     <main className="flex h-[calc(100vh-3rem)] gap-4 p-4">
       {/* Canvas area - 2/3 width */}
@@ -194,14 +232,49 @@ export default function ExtractPage() {
             <ToolSelector />
           </div>
 
-          {/* Axis calibration */}
-          <AxisCalibrator ref={calibratorRef} />
-
-          {/* Color picker */}
-          <ColorPicker />
-
-          {/* Curve extraction */}
-          <CurveExtractor getImageData={getImageData} />
+          {/* Collapsible panels */}
+          {panels.map((panel) => {
+            const expanded = isPanelExpanded(panel.id)
+            const isActive = tool === panel.id
+            return (
+              <div
+                key={panel.id}
+                className={`rounded-md border-l-2 ${
+                  isActive ? 'border-primary' : 'border-transparent'
+                }`}
+              >
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-1.5 px-2 py-1.5 text-sm font-semibold hover:bg-secondary/50 rounded-md transition-colors"
+                  onClick={() => togglePanel(panel.id)}
+                >
+                  {expanded ? (
+                    <ChevronDown className="h-4 w-4 shrink-0" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 shrink-0" />
+                  )}
+                  {t(panel.titleKey)}
+                </button>
+                <div
+                  className={`transition-all duration-300 ${
+                    expanded
+                      ? 'max-h-[2000px] opacity-100 overflow-visible'
+                      : 'max-h-0 opacity-0 overflow-hidden'
+                  }`}
+                >
+                  <div className="px-2 pb-2">
+                    {panel.id === 'calibrate' && (
+                      <AxisCalibrator ref={calibratorRef} />
+                    )}
+                    {panel.id === 'pick' && <ColorPicker />}
+                    {panel.id === 'draw' && (
+                      <CurveExtractor getImageData={getImageData} />
+                    )}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
 
           {/* Export/Import toolbar */}
           {hasPoints && (

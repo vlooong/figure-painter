@@ -53,6 +53,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
   const [isDragging, setIsDragging] = useState(false)
   const dragStart = useRef({ x: 0, y: 0 })
   const offsetStart = useRef({ x: 0, y: 0 })
+  const resizeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Expose methods for color picking and extraction
   useImperativeHandle(
@@ -91,6 +92,22 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
     }),
     [zoom, offset]
   )
+
+  // Reusable fit-to-view: centers and scales the image to fit the canvas
+  const fitToView = useCallback(() => {
+    const canvas = canvasRef.current
+    const img = imageRef.current
+    if (!canvas || !img || !canvas.width || !canvas.height) return
+
+    const scaleX = canvas.width / img.width
+    const scaleY = canvas.height / img.height
+    const fitZoom = Math.min(scaleX, scaleY, 1)
+    setZoom(fitZoom)
+    setOffset({
+      x: (canvas.width - img.width * fitZoom) / 2,
+      y: (canvas.height - img.height * fitZoom) / 2,
+    })
+  }, [])
 
   const handleCanvasClickInternal = useCallback(
     (coord: { x: number; y: number }) => {
@@ -262,17 +279,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
           }
 
           // Calculate initial zoom to fit image
-          const canvas = canvasRef.current
-          if (canvas) {
-            const scaleX = canvas.width / img.width
-            const scaleY = canvas.height / img.height
-            const fitZoom = Math.min(scaleX, scaleY, 1)
-            setZoom(fitZoom)
-            setOffset({
-              x: (canvas.width - img.width * fitZoom) / 2,
-              y: (canvas.height - img.height * fitZoom) / 2,
-            })
-          }
+          fitToView()
 
           // Create ImageRecord
           file.arrayBuffer().then((buffer) => {
@@ -292,7 +299,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
       }
       reader.readAsDataURL(file)
     },
-    [setImage]
+    [setImage, fitToView]
   )
 
   // File input handler
@@ -397,11 +404,26 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
     const observer = new ResizeObserver(() => {
       canvas.width = container.clientWidth
       canvas.height = container.clientHeight
+
+      // Debounce fitToView to batch rapid resize events
+      if (resizeTimerRef.current) {
+        clearTimeout(resizeTimerRef.current)
+      }
+      resizeTimerRef.current = setTimeout(() => {
+        fitToView()
+      }, 100)
+
+      // Immediate redraw to avoid blank flash
       draw()
     })
     observer.observe(container)
-    return () => observer.disconnect()
-  }, [draw])
+    return () => {
+      observer.disconnect()
+      if (resizeTimerRef.current) {
+        clearTimeout(resizeTimerRef.current)
+      }
+    }
+  }, [draw, fitToView])
 
   return (
     <div className="flex h-full flex-col gap-2">

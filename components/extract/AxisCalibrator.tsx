@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useExtractStore } from '@/stores/extractStore'
@@ -16,13 +16,26 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
     const { t } = useTranslation()
     const tool = useExtractStore((s) => s.tool)
     const calibration = useExtractStore((s) => s.calibration)
-    const { setCalibration, setTool } = useExtractStore((s) => s.actions)
+    const { setCalibration, setTool, setPendingCalibrationPoints, clearPendingCalibrationPoints } = useExtractStore((s) => s.actions)
 
     const [points, setPoints] = useState<CalibrationPoint[]>([])
     const [xAxisType, setXAxisType] = useState<'linear' | 'log'>('linear')
     const [yAxisType, setYAxisType] = useState<'linear' | 'log'>('linear')
 
     const isCalibrating = tool === 'calibrate'
+
+    useEffect(() => {
+      if (!isCalibrating) {
+        clearPendingCalibrationPoints()
+        return
+      }
+      setPendingCalibrationPoints(points)
+    }, [
+      isCalibrating,
+      points,
+      setPendingCalibrationPoints,
+      clearPendingCalibrationPoints,
+    ])
 
     const addPixelPoint = useCallback(
       (pixel: { x: number; y: number }) => {
@@ -177,7 +190,7 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
                       type="number"
                       step="any"
                       className="h-7 text-sm"
-                      value={pt.data.x || ''}
+                      value={pt.data.x ?? ''}
                       onChange={(e) =>
                         updateDataValue(i, 'x', e.target.value)
                       }
@@ -191,7 +204,7 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
                       type="number"
                       step="any"
                       className="h-7 text-sm"
-                      value={pt.data.y || ''}
+                      value={pt.data.y ?? ''}
                       onChange={(e) =>
                         updateDataValue(i, 'y', e.target.value)
                       }

@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type {
   ImageRecord,
   Calibration,
+  CalibrationPoint,
   DataPoint,
   ExtractTool,
 } from '@/lib/types'
@@ -14,6 +15,8 @@ interface UndoEntry {
 interface ExtractActions {
   setImage: (image: ImageRecord | null) => void
   setCalibration: (calibration: Calibration | null) => void
+  setPendingCalibrationPoints: (points: CalibrationPoint[]) => void
+  clearPendingCalibrationPoints: () => void
   setTool: (tool: ExtractTool) => void
   setSelectedColor: (color: string | null) => void
   setTolerance: (tolerance: number) => void
@@ -34,6 +37,7 @@ interface ExtractActions {
 interface ExtractStore {
   image: ImageRecord | null
   calibration: Calibration | null
+  pendingCalibrationPoints: CalibrationPoint[]
   tool: ExtractTool
   selectedColor: string | null
   tolerance: number
@@ -48,6 +52,7 @@ interface ExtractStore {
 const initialState = {
   image: null,
   calibration: null,
+  pendingCalibrationPoints: [] as CalibrationPoint[],
   tool: 'select' as ExtractTool,
   selectedColor: null,
   tolerance: 30,
@@ -62,6 +67,9 @@ export const useExtractStore = create<ExtractStore>()((set) => ({
   actions: {
     setImage: (image) => set({ image }),
     setCalibration: (calibration) => set({ calibration }),
+    setPendingCalibrationPoints: (points) =>
+      set({ pendingCalibrationPoints: points }),
+    clearPendingCalibrationPoints: () => set({ pendingCalibrationPoints: [] }),
     setTool: (tool) => set({ tool }),
     setSelectedColor: (color) => set({ selectedColor: color }),
     setTolerance: (tolerance) => set({ tolerance }),

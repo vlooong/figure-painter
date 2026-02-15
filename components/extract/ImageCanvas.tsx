@@ -45,6 +45,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
   const selectedColor = useExtractStore((s) => s.selectedColor)
   const tolerance = useExtractStore((s) => s.tolerance)
   const extractedPoints = useExtractStore((s) => s.extractedPoints)
+  const pendingCalibrationPoints = useExtractStore((s) => s.pendingCalibrationPoints)
   const { setImage } = useExtractStore((s) => s.actions)
 
   const [zoom, setZoom] = useState(1)
@@ -124,6 +125,30 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
     }
 
     // Draw calibration points
+    // Draw pending calibration points
+    if (pendingCalibrationPoints.length > 0) {
+      ctx.save()
+      ctx.strokeStyle = '#f97316'
+      ctx.fillStyle = '#f97316'
+      ctx.lineWidth = 2
+      ctx.setLineDash([4, 3])
+      pendingCalibrationPoints.forEach((pt, i) => {
+        const px = pt.pixel.x * zoom + offset.x
+        const py = pt.pixel.y * zoom + offset.y
+
+        ctx.beginPath()
+        ctx.moveTo(px - 8, py)
+        ctx.lineTo(px + 8, py)
+        ctx.moveTo(px, py - 8)
+        ctx.lineTo(px, py + 8)
+        ctx.stroke()
+
+        ctx.font = '12px sans-serif'
+        ctx.fillText('P' + (i + 1), px + 10, py - 4)
+      })
+      ctx.restore()
+    }
+
     if (calibration?.points) {
       ctx.save()
       calibration.points.forEach((pt, i) => {
@@ -211,7 +236,7 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
       }
       ctx.restore()
     }
-  }, [zoom, offset, calibration, mousePos, selectedColor, tolerance, extractedPoints, t])
+  }, [zoom, offset, calibration, pendingCalibrationPoints, mousePos, selectedColor, tolerance, extractedPoints, t])
 
   useEffect(() => {
     draw()

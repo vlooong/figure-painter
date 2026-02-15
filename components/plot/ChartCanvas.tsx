@@ -14,6 +14,7 @@ export interface ChartCanvasHandle {
 export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_props, ref) {
   const { t } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
+  const isDraggingRef = useRef(false)
 
   const activePlot = usePlotStore((s) => s.activePlot)
   const { updatePlotConfig } = usePlotStore((s) => s.actions)
@@ -105,30 +106,6 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
       })
     }
 
-    // Build draggable graphic elements
-    const graphicElements: Record<string, unknown>[] = []
-    for (const ds of selectedDatasets) {
-      for (let i = 0; i < ds.points.length; i++) {
-        const p = ds.points[i]
-        graphicElements.push({
-          type: 'circle',
-          position: [0, 0], // Will be set by convertToPixel after render
-          shape: { r: 6 },
-          style: {
-            fill: ds.color,
-            opacity: 0.6,
-            stroke: '#fff',
-            lineWidth: 1,
-          },
-          draggable: true,
-          // Store dataset info for drag handler lookup
-          info: { datasetId: ds.id, pointIndex: i },
-          z: 100,
-          invisible: true, // Start invisible, position in callback
-        })
-      }
-    }
-
     return {
       // Global text style from template
       textStyle: template
@@ -184,10 +161,6 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
       },
       yAxis: yAxisList,
       series,
-      // graphic elements positioned after render via callback
-      graphic: graphicElements.length > 0
-        ? { elements: graphicElements }
-        : undefined,
     }
   }, [activePlot, selectedDatasets, t])
 
@@ -232,6 +205,7 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
           z: 100,
           invisible: false,
           ondrag: function (this: { position: number[] }) {
+            isDraggingRef.current = true
             const newPixel = this.position
             try {
               const dataCoord = instance.convertFromPixel(
@@ -256,6 +230,9 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
               // ignore conversion errors during drag
             }
           },
+          ondragend: function () {
+            isDraggingRef.current = false
+          },
         })
       }
     }
@@ -271,6 +248,9 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
   useEffect(() => {
     const instance = chartRef.current
     if (!instance) return
+
+    // Skip graphic rebuild during active drag to prevent jump to origin
+    if (isDraggingRef.current) return
 
     // Wait for next frame to ensure chart has rendered
     const raf = requestAnimationFrame(() => {

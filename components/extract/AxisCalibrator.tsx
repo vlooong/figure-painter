@@ -191,6 +191,7 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
                       step="any"
                       className="h-7 text-sm"
                       value={pt.data.x ?? ''}
+                      onFocus={(e) => e.target.select()}
                       onChange={(e) =>
                         updateDataValue(i, 'x', e.target.value)
                       }
@@ -205,6 +206,7 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
                       step="any"
                       className="h-7 text-sm"
                       value={pt.data.y ?? ''}
+                      onFocus={(e) => e.target.select()}
                       onChange={(e) =>
                         updateDataValue(i, 'y', e.target.value)
                       }

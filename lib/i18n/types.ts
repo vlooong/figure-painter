@@ -153,5 +153,8 @@ export interface Translations {
     ieee: { name: string; description: string }
     acs: { name: string; description: string }
     science: { name: string; description: string }
+    vibrant: { name: string; description: string }
+    muted: { name: string; description: string }
+    highContrast: { name: string; description: string }
   }
 }

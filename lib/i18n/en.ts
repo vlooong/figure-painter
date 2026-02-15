@@ -152,6 +152,9 @@ export const en: Translations = {
     nature: { name: 'Nature', description: 'Compact style for Nature journal figures' },
     ieee: { name: 'IEEE', description: 'Column-width style for IEEE publications' },
     acs: { name: 'ACS', description: 'ACS single-column figure style' },
-    science: { name: 'Science', description: 'Minimal style for Science journal figures' },
+    science: { name: 'Science', description: 'Minimal style for Science / AAAS figures' },
+    vibrant: { name: 'Vibrant', description: 'Color-blind safe with high visibility' },
+    muted: { name: 'Muted', description: 'Soft tones for multi-dataset figures' },
+    highContrast: { name: 'High Contrast', description: 'Bold lines for print and grayscale' },
   },
 }

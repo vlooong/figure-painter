@@ -152,6 +152,9 @@ export const zh: Translations = {
     nature: { name: 'Nature', description: '适用于 Nature 期刊的紧凑风格' },
     ieee: { name: 'IEEE', description: '适用于 IEEE 出版物的栏宽风格' },
     acs: { name: 'ACS', description: 'ACS 单栏图表风格' },
-    science: { name: 'Science', description: '适用于 Science 期刊的简约风格' },
+    science: { name: 'Science', description: '适用于 Science / AAAS 的简约风格' },
+    vibrant: { name: '鲜明', description: '色盲安全配色，高可见度' },
+    muted: { name: '柔和', description: '柔和色调，适合多数据集图表' },
+    highContrast: { name: '高对比', description: '粗线条，适合打印和灰度输出' },
   },
 }

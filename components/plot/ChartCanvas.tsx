@@ -63,7 +63,7 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
             type: (adv.gridLineStyle ?? template.axisStyle.gridStyle) as 'solid' | 'dashed' | 'dotted',
           },
         }
-      : { show: adv.showGridLines ?? true, lineStyle: { type: (adv.gridLineStyle ?? 'dashed') as const } }
+      : { show: adv.showGridLines ?? true, lineStyle: { type: (adv.gridLineStyle ?? 'dashed') as 'solid' | 'dashed' | 'dotted' } }
 
     const axisTickConfig = template
       ? { inside: template.axisStyle.tickInside }

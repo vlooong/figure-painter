@@ -36,8 +36,10 @@ export function ExportPanel({ chartCanvasRef }: ExportPanelProps) {
       pixelRatio,
       backgroundColor: '#fff',
     })
-    exportChartPNG(dataURL, filename || 'chart')
-  }, [chartCanvasRef, dpi, filename])
+    const pngWidth = Math.round(exportWidth * pixelRatio)
+    const pngHeight = Math.round(exportHeight * pixelRatio)
+    exportChartPNG(dataURL, filename || 'chart', pngWidth, pngHeight)
+  }, [chartCanvasRef, dpi, filename, exportWidth, exportHeight])
 
   const handleExportSVG = useCallback(() => {
     const instance = chartCanvasRef.current?.getChartInstance()

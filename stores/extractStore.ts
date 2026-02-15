@@ -65,7 +65,8 @@ export const useExtractStore = create<ExtractStore>()((set) => ({
     setTool: (tool) => set({ tool }),
     setSelectedColor: (color) => set({ selectedColor: color }),
     setTolerance: (tolerance) => set({ tolerance }),
-    setExtractedPoints: (points) => set({ extractedPoints: points }),
+    setExtractedPoints: (points) =>
+      set({ extractedPoints: points, editingPoints: points }),
     setEditingPoints: (points) => set({ editingPoints: points }),
     updatePoint: (index, point) =>
       set((state) => {

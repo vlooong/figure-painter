@@ -68,11 +68,36 @@ function downloadBlob(content: string, filename: string, mimeType: string): void
 }
 
 /**
- * Export chart as PNG from a base64 data URL.
- * Converts the data URL to a Blob and triggers download.
+ * Export chart as PNG from a data URL.
+ * Handles both canvas-based (base64 PNG) and SVG-based data URLs
+ * by rendering SVG onto a canvas when needed.
  */
-export function exportChartPNG(dataURL: string, filename: string): void {
-  downloadDataURL(dataURL, `${filename}.png`)
+export function exportChartPNG(
+  dataURL: string,
+  filename: string,
+  width?: number,
+  height?: number,
+): void {
+  if (dataURL.startsWith('data:image/png')) {
+    // Canvas renderer: already a PNG data URL
+    downloadDataURL(dataURL, `${filename}.png`)
+    return
+  }
+
+  // SVG renderer: render SVG onto a canvas to produce PNG
+  const img = new Image()
+  img.onload = () => {
+    const canvas = document.createElement('canvas')
+    canvas.width = width ?? img.naturalWidth
+    canvas.height = height ?? img.naturalHeight
+    const ctx = canvas.getContext('2d')!
+    ctx.fillStyle = '#fff'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+    const pngDataURL = canvas.toDataURL('image/png')
+    downloadDataURL(pngDataURL, `${filename}.png`)
+  }
+  img.src = dataURL
 }
 
 /**

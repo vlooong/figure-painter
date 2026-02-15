@@ -109,6 +109,8 @@ export interface Translations {
       empty: string
       points: string
       importCSV: string
+      selected: string
+      copy: string
     }
     chartSettings: {
       title: string

@@ -109,6 +109,8 @@ export const zh: Translations = {
       empty: '暂无数据集。请导入 CSV 或从图像中提取。',
       points: '个点',
       importCSV: '导入 CSV',
+      selected: '已选',
+      copy: '复制',
     },
     chartSettings: {
       title: '图表设置',

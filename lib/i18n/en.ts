@@ -109,6 +109,8 @@ export const en: Translations = {
       empty: 'No datasets yet. Import CSV or extract from an image.',
       points: 'pts',
       importCSV: 'Import CSV',
+      selected: 'selected',
+      copy: 'Copy',
     },
     chartSettings: {
       title: 'Chart Settings',

@@ -8,14 +8,13 @@ import { db } from '@/services/db'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from '@/lib/i18n'
+import { Copy } from 'lucide-react'
 import type { Dataset } from '@/lib/types'
-
-const MAX_SELECTED = 5
 
 export function DatasetSelector() {
   const { t } = useTranslation()
   const datasets = useDatasetStore((s) => s.datasets)
-  const { addDataset, loadFromDb } = useDatasetStore((s) => s.actions)
+  const { addDataset, loadFromDb, duplicateDataset } = useDatasetStore((s) => s.actions)
   const activePlot = usePlotStore((s) => s.activePlot)
   const { addDatasetToPlot, removeDatasetFromPlot } = usePlotStore(
     (s) => s.actions
@@ -33,13 +32,20 @@ export function DatasetSelector() {
   const handleToggle = useCallback(
     (id: string, checked: boolean) => {
       if (checked) {
-        if (selectedIds.size >= MAX_SELECTED) return
         addDatasetToPlot(id)
       } else {
         removeDatasetFromPlot(id)
       }
     },
-    [selectedIds.size, addDatasetToPlot, removeDatasetFromPlot]
+    [addDatasetToPlot, removeDatasetFromPlot]
+  )
+
+  const handleDuplicate = useCallback(
+    (id: string) => {
+      const newId = duplicateDataset(id)
+      if (newId) addDatasetToPlot(newId)
+    },
+    [duplicateDataset, addDatasetToPlot]
   )
 
   const handleImportCSV = useCallback(
@@ -70,7 +76,7 @@ export function DatasetSelector() {
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold">{t('plot.datasets.title')}</h2>
         <span className="text-xs text-muted-foreground">
-          {selectedIds.size}/{MAX_SELECTED}
+          {selectedIds.size} {t('plot.datasets.selected')}
         </span>
       </div>
 
@@ -83,7 +89,6 @@ export function DatasetSelector() {
           <ul className="flex flex-col gap-1">
             {datasetList.map((ds) => {
               const isSelected = selectedIds.has(ds.id)
-              const isDisabled = !isSelected && selectedIds.size >= MAX_SELECTED
               return (
                 <li
                   key={ds.id}
@@ -91,7 +96,6 @@ export function DatasetSelector() {
                 >
                   <Checkbox
                     checked={isSelected}
-                    disabled={isDisabled}
                     onCheckedChange={(checked) =>
                       handleToggle(ds.id, checked === true)
                     }
@@ -104,6 +108,15 @@ export function DatasetSelector() {
                   <span className="text-xs text-muted-foreground">
                     {ds.points.length} {t('plot.datasets.points')}
                   </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 shrink-0"
+                    onClick={() => handleDuplicate(ds.id)}
+                    title={t('plot.datasets.copy')}
+                  >
+                    <Copy className="h-3.5 w-3.5" />
+                  </Button>
                 </li>
               )
             })}

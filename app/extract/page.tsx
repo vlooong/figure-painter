@@ -36,7 +36,8 @@ export default function ExtractPage() {
   const editingPoints = useExtractStore((s) => s.editingPoints)
   const selectedColor = useExtractStore((s) => s.selectedColor)
   const undoStack = useExtractStore((s) => s.undoStack)
-  const { setSelectedColor, setEditingPoints, selectPoint, undoLastMove } =
+  const drawMode = useExtractStore((s) => s.drawMode)
+  const { setSelectedColor, setEditingPoints, selectPoint, undoLastMove, addDrawnNode } =
     useExtractStore((s) => s.actions)
   const { addDataset } = useDatasetStore((s) => s.actions)
 
@@ -61,10 +62,12 @@ export default function ExtractPage() {
         if (color) {
           setSelectedColor(color)
         }
+      } else if (tool === 'draw' && drawMode === 'manual') {
+        addDrawnNode({ x: Math.round(coord.x), y: Math.round(coord.y) })
       }
       syncTransform()
     },
-    [tool, setSelectedColor, syncTransform]
+    [tool, drawMode, setSelectedColor, addDrawnNode, syncTransform]
   )
 
   const getImageData = useCallback(() => {

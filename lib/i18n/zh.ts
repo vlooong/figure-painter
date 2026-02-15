@@ -77,6 +77,13 @@ export const zh: Translations = {
       extractCurve: '提取曲线',
       extractedPoints: '已提取 {n} 个点',
       clearExtraction: '清除提取',
+      modeAuto: '自动提取',
+      modeManual: '手动绘制',
+      drawInstruction: '在图像上点击放置曲线节点。节点按顺序连接。',
+      drawnNodes: '已放置 {n} 个节点',
+      commitDraw: '转换为数据点',
+      clearDraw: '清除绘制',
+      undoLastNode: '撤销上一节点',
     },
     overlay: {
       hideOverlay: '隐藏叠加层',

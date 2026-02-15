@@ -5,7 +5,9 @@ import type {
   CalibrationPoint,
   DataPoint,
   ExtractTool,
+  DrawMode,
 } from '@/lib/types'
+import { pixelToData } from '@/lib/calibration'
 
 interface UndoEntry {
   index: number
@@ -33,6 +35,12 @@ interface ExtractActions {
   selectPoint: (index: number | null) => void
   movePoint: (index: number, newX: number, newY: number) => void
   undoLastMove: () => void
+  // Manual drawing actions
+  addDrawnNode: (node: { x: number; y: number }) => void
+  removeLastDrawnNode: () => void
+  clearDrawnNodes: () => void
+  setDrawMode: (mode: DrawMode) => void
+  commitDrawnNodes: () => void
 }
 
 interface ExtractStore {
@@ -48,6 +56,9 @@ interface ExtractStore {
   // Drag-edit state
   selectedPointIndex: number | null
   undoStack: UndoEntry[]
+  // Manual drawing state
+  drawnNodes: { x: number; y: number }[]
+  drawMode: DrawMode
   actions: ExtractActions
 }
 
@@ -63,6 +74,8 @@ const initialState = {
   editingPoints: [],
   selectedPointIndex: null as number | null,
   undoStack: [] as UndoEntry[],
+  drawnNodes: [] as { x: number; y: number }[],
+  drawMode: 'auto' as DrawMode,
 }
 
 export const useExtractStore = create<ExtractStore>()((set) => ({
@@ -111,6 +124,8 @@ export const useExtractStore = create<ExtractStore>()((set) => ({
         editingPoints: [],
         selectedPointIndex: null,
         undoStack: [],
+        drawnNodes: [],
+        drawMode: 'auto' as DrawMode,
       }),
     reset: () => set(initialState),
     // Drag-edit actions
@@ -139,6 +154,26 @@ export const useExtractStore = create<ExtractStore>()((set) => ({
           next[entry.index] = entry.prev
         }
         return { editingPoints: next, undoStack: stack }
+      }),
+    // Manual drawing actions
+    addDrawnNode: (node) =>
+      set((state) => ({ drawnNodes: [...state.drawnNodes, node] })),
+    removeLastDrawnNode: () =>
+      set((state) => ({ drawnNodes: state.drawnNodes.slice(0, -1) })),
+    clearDrawnNodes: () => set({ drawnNodes: [] }),
+    setDrawMode: (mode) => set({ drawMode: mode }),
+    commitDrawnNodes: () =>
+      set((state) => {
+        const { calibration, drawnNodes } = state
+        if (!calibration || drawnNodes.length === 0) return state
+        const points = drawnNodes
+          .map((node) => pixelToData(node, calibration))
+          .sort((a, b) => a.x - b.x)
+        return {
+          extractedPoints: points,
+          editingPoints: points,
+          drawnNodes: [],
+        }
       }),
   },
 }))

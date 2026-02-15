@@ -77,6 +77,13 @@ export interface Translations {
       extractCurve: string
       extractedPoints: string
       clearExtraction: string
+      modeAuto: string
+      modeManual: string
+      drawInstruction: string
+      drawnNodes: string
+      commitDraw: string
+      clearDraw: string
+      undoLastNode: string
     }
     overlay: {
       hideOverlay: string

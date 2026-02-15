@@ -46,6 +46,9 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
   const tolerance = useExtractStore((s) => s.tolerance)
   const extractedPoints = useExtractStore((s) => s.extractedPoints)
   const pendingCalibrationPoints = useExtractStore((s) => s.pendingCalibrationPoints)
+  const drawnNodes = useExtractStore((s) => s.drawnNodes)
+  const tool = useExtractStore((s) => s.tool)
+  const drawMode = useExtractStore((s) => s.drawMode)
   const { setImage } = useExtractStore((s) => s.actions)
 
   const [zoom, setZoom] = useState(1)
@@ -253,7 +256,42 @@ export const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(
       }
       ctx.restore()
     }
-  }, [zoom, offset, calibration, pendingCalibrationPoints, mousePos, selectedColor, tolerance, extractedPoints, t])
+
+    // Draw manual drawing path (nodes + connecting lines)
+    if (tool === 'draw' && drawMode === 'manual' && drawnNodes.length > 0) {
+      ctx.save()
+      // Draw connecting lines
+      ctx.strokeStyle = '#10b981'
+      ctx.lineWidth = 2
+      ctx.beginPath()
+      const first = drawnNodes[0]
+      ctx.moveTo(first.x * zoom + offset.x, first.y * zoom + offset.y)
+      for (let i = 1; i < drawnNodes.length; i++) {
+        const node = drawnNodes[i]
+        ctx.lineTo(node.x * zoom + offset.x, node.y * zoom + offset.y)
+      }
+      ctx.stroke()
+
+      // Draw node circles with labels
+      for (let i = 0; i < drawnNodes.length; i++) {
+        const node = drawnNodes[i]
+        const cx = node.x * zoom + offset.x
+        const cy = node.y * zoom + offset.y
+        ctx.beginPath()
+        ctx.arc(cx, cy, 5, 0, Math.PI * 2)
+        ctx.fillStyle = '#10b981'
+        ctx.fill()
+        ctx.strokeStyle = '#047857'
+        ctx.lineWidth = 1.5
+        ctx.stroke()
+        // Label
+        ctx.fillStyle = '#047857'
+        ctx.font = '10px sans-serif'
+        ctx.fillText('N' + (i + 1), cx + 7, cy - 4)
+      }
+      ctx.restore()
+    }
+  }, [zoom, offset, calibration, pendingCalibrationPoints, mousePos, selectedColor, tolerance, extractedPoints, drawnNodes, tool, drawMode, t])
 
   useEffect(() => {
     draw()

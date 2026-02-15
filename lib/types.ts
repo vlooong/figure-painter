@@ -158,6 +158,7 @@ export interface BenchmarkResult {
 
 // ---- Extraction State ----
 export type ExtractTool = 'select' | 'pick' | 'calibrate' | 'draw'
+export type DrawMode = 'auto' | 'manual'
 
 export interface ExtractState {
   image: ImageRecord | null
@@ -168,4 +169,6 @@ export interface ExtractState {
   extractedPoints: DataPoint[]
   editingPoints: DataPoint[]
   tool: ExtractTool
+  drawnNodes: { x: number; y: number }[]
+  drawMode: DrawMode
 }

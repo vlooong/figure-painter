@@ -77,6 +77,13 @@ export const en: Translations = {
       extractCurve: 'Extract Curve',
       extractedPoints: 'Extracted {n} points',
       clearExtraction: 'Clear Extraction',
+      modeAuto: 'Auto Extract',
+      modeManual: 'Manual Draw',
+      drawInstruction: 'Click on the image to place points along the curve. Points are connected in order.',
+      drawnNodes: '{n} nodes placed',
+      commitDraw: 'Convert to Data Points',
+      clearDraw: 'Clear Drawing',
+      undoLastNode: 'Undo Last Node',
     },
     overlay: {
       hideOverlay: 'Hide Overlay',

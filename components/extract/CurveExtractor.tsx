@@ -46,8 +46,6 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-sm font-semibold">{t('extract.curveExtractor.title')}</h3>
-
       {!canExtract && (
         <p className="text-xs text-muted-foreground">
           {!selectedColor && !calibration

@@ -31,8 +31,6 @@ export function ColorPicker() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-sm font-semibold">{t('extract.colorPicker.title')}</h3>
-
       {!isPickMode && !selectedColor && (
         <p className="text-xs text-muted-foreground">
           {t('extract.colorPicker.selectToolInstruction')}

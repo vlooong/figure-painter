@@ -106,14 +106,11 @@ export const AxisCalibrator = forwardRef<AxisCalibratorHandle>(
 
     return (
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold">{t('extract.calibration.title')}</h3>
-          {calibration && (
-            <span className="text-xs font-medium text-green-600">
-              {t('extract.calibration.calibrated')}
-            </span>
-          )}
-        </div>
+        {calibration && (
+          <span className="text-xs font-medium text-green-600">
+            {t('extract.calibration.calibrated')}
+          </span>
+        )}
 
         {!isCalibrating && !calibration && (
           <Button size="sm" onClick={startCalibration}>

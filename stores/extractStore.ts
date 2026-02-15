@@ -20,6 +20,7 @@ interface ExtractActions {
   setTool: (tool: ExtractTool) => void
   setSelectedColor: (color: string | null) => void
   setTolerance: (tolerance: number) => void
+  setSampleStep: (step: number) => void
   setExtractedPoints: (points: DataPoint[]) => void
   setEditingPoints: (points: DataPoint[]) => void
   updatePoint: (index: number, point: DataPoint) => void
@@ -41,6 +42,7 @@ interface ExtractStore {
   tool: ExtractTool
   selectedColor: string | null
   tolerance: number
+  sampleStep: number
   extractedPoints: DataPoint[]
   editingPoints: DataPoint[]
   // Drag-edit state
@@ -56,6 +58,7 @@ const initialState = {
   tool: 'select' as ExtractTool,
   selectedColor: null,
   tolerance: 30,
+  sampleStep: 1,
   extractedPoints: [],
   editingPoints: [],
   selectedPointIndex: null as number | null,
@@ -73,6 +76,7 @@ export const useExtractStore = create<ExtractStore>()((set) => ({
     setTool: (tool) => set({ tool }),
     setSelectedColor: (color) => set({ selectedColor: color }),
     setTolerance: (tolerance) => set({ tolerance }),
+    setSampleStep: (step) => set({ sampleStep: step }),
     setExtractedPoints: (points) =>
       set({ extractedPoints: points, editingPoints: points }),
     setEditingPoints: (points) => set({ editingPoints: points }),
@@ -102,6 +106,7 @@ export const useExtractStore = create<ExtractStore>()((set) => ({
       set({
         selectedColor: null,
         tolerance: 30,
+        sampleStep: 1,
         extractedPoints: [],
         editingPoints: [],
         selectedPointIndex: null,

@@ -64,6 +64,8 @@ export const en: Translations = {
       selectedColor: 'Selected color',
       tolerance: 'Tolerance',
       toleranceHelp: 'Lower = stricter color matching. Higher = more permissive.',
+      sampleStep: 'Sample Step',
+      sampleStepHelp: 'Higher = fewer extracted points. 1 = every pixel column.',
     },
     curveExtractor: {
       title: 'Curve Extraction',

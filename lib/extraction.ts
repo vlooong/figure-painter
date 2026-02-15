@@ -86,12 +86,14 @@ export function extractCurve(
   imageData: ImageData,
   targetColor: TargetColor,
   tolerance: number,
-  calibration: Calibration
+  calibration: Calibration,
+  step: number = 1
 ): DataPoint[] {
+  step = Math.max(1, Math.round(step))
   const { width, height, data } = imageData
   const rawPoints: DataPoint[] = []
 
-  for (let x = 0; x < width; x++) {
+  for (let x = 0; x < width; x += step) {
     const matchedYs: number[] = []
 
     for (let y = 0; y < height; y++) {

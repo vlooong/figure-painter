@@ -64,6 +64,8 @@ export const zh: Translations = {
       selectedColor: '已选颜色',
       tolerance: '容差',
       toleranceHelp: '越低 = 颜色匹配越严格。越高 = 越宽松。',
+      sampleStep: '采样步长',
+      sampleStepHelp: '越高 = 提取点越少。1 = 逐像素列扫描。',
     },
     curveExtractor: {
       title: '曲线提取',

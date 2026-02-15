@@ -9,14 +9,22 @@ export function ColorPicker() {
   const { t } = useTranslation()
   const selectedColor = useExtractStore((s) => s.selectedColor)
   const tolerance = useExtractStore((s) => s.tolerance)
+  const sampleStep = useExtractStore((s) => s.sampleStep)
   const tool = useExtractStore((s) => s.tool)
-  const { setTolerance } = useExtractStore((s) => s.actions)
+  const { setTolerance, setSampleStep } = useExtractStore((s) => s.actions)
 
   const handleToleranceChange = useCallback(
     (value: number[]) => {
       setTolerance(value[0])
     },
     [setTolerance]
+  )
+
+  const handleSampleStepChange = useCallback(
+    (value: number[]) => {
+      setSampleStep(value[0])
+    },
+    [setSampleStep]
   )
 
   const isPickMode = tool === 'pick'
@@ -72,6 +80,28 @@ export function ColorPicker() {
             />
             <p className="text-xs text-muted-foreground">
               {t('extract.colorPicker.toleranceHelp')}
+            </p>
+          </div>
+
+          {/* Sample step slider */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium text-muted-foreground">
+                {t('extract.colorPicker.sampleStep')}
+              </label>
+              <span className="text-xs font-mono tabular-nums">
+                {sampleStep}
+              </span>
+            </div>
+            <Slider
+              min={1}
+              max={20}
+              step={1}
+              value={[sampleStep]}
+              onValueChange={handleSampleStepChange}
+            />
+            <p className="text-xs text-muted-foreground">
+              {t('extract.colorPicker.sampleStepHelp')}
             </p>
           </div>
         </div>

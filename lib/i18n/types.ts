@@ -64,6 +64,8 @@ export interface Translations {
       selectedColor: string
       tolerance: string
       toleranceHelp: string
+      sampleStep: string
+      sampleStepHelp: string
     }
     curveExtractor: {
       title: string

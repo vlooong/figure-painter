@@ -142,6 +142,7 @@ export interface ExtractState {
   calibration: Calibration | null
   selectedColor: string | null
   tolerance: number
+  sampleStep: number
   extractedPoints: DataPoint[]
   editingPoints: DataPoint[]
   tool: ExtractTool

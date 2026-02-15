@@ -14,6 +14,7 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
   const { t } = useTranslation()
   const selectedColor = useExtractStore((s) => s.selectedColor)
   const tolerance = useExtractStore((s) => s.tolerance)
+  const sampleStep = useExtractStore((s) => s.sampleStep)
   const calibration = useExtractStore((s) => s.calibration)
   const extractedPoints = useExtractStore((s) => s.extractedPoints)
   const { setExtractedPoints } = useExtractStore((s) => s.actions)
@@ -33,11 +34,11 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
     // Use setTimeout to let the UI update before blocking computation
     setTimeout(() => {
       const targetColor = hexToRgb(selectedColor)
-      const points = extractCurve(imageData, targetColor, tolerance, calibration)
+      const points = extractCurve(imageData, targetColor, tolerance, calibration, sampleStep)
       setExtractedPoints(points)
       setIsExtracting(false)
     }, 0)
-  }, [selectedColor, tolerance, calibration, getImageData, setExtractedPoints])
+  }, [selectedColor, tolerance, sampleStep, calibration, getImageData, setExtractedPoints])
 
   const handleClear = useCallback(() => {
     setExtractedPoints([])

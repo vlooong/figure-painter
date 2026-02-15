@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useExtractStore } from '@/stores/extractStore'
 import { useTranslation } from '@/lib/i18n'
@@ -39,6 +39,17 @@ export function CurveExtractor({ getImageData }: CurveExtractorProps) {
       setIsExtracting(false)
     }, 0)
   }, [selectedColor, tolerance, sampleStep, calibration, getImageData, setExtractedPoints])
+
+  // Auto re-extract when tolerance or sampleStep changes (debounced)
+  useEffect(() => {
+    if (!selectedColor || !calibration) return
+
+    const timer = setTimeout(() => {
+      handleExtract()
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [tolerance, sampleStep, selectedColor, calibration, handleExtract])
 
   const handleClear = useCallback(() => {
     setExtractedPoints([])

@@ -1,69 +1,46 @@
 # Figure Painter
 
-A web-based tool for extracting data from scientific paper figures and creating publication-quality plots.
+A browser-based toolkit for scientific paper figure data extraction, publication-quality plotting, and benchmark result querying — all client-side, no server required.
+
+**Live Demo: [figure.vlooong.top](https://figure.vlooong.top)**
 
 [中文文档](./README.zh-CN.md)
 
-## Screenshots
+## Why Figure Painter?
 
-### Data Extraction
-
-![Data Extraction](docs/screenshots/extract-page.png)
-
-### Scientific Plotting
-
-![Scientific Plotting](docs/screenshots/plot-page.png)
-
-![Style Templates](docs/screenshots/plot-page-templates.png)
-
-![Chart Export](docs/screenshots/plot-page-export.png)
-
-### Benchmark Query
-
-![Benchmark List View](docs/screenshots/benchmark-list-view.png)
-
-![Benchmark Detail View](docs/screenshots/benchmark-detail-view.png)
+- **Extract data from paper figures** — Upload a chart image, calibrate axes, pick curve colors, and automatically extract data points. No more manual reading of graph values.
+- **Create journal-ready plots** — Built-in style templates for Nature, IEEE, ACS, Science and more. Export as high-DPI PNG or SVG, ready for submission.
+- **Query benchmark results instantly** — Search time series algorithm performance across standard datasets. Copy comparison tables as LaTeX, TSV, or Markdown directly into your paper.
+- **Everything in the browser** — Zero server dependency. Data stays on your machine via IndexedDB. Works offline after first load.
 
 ## Features
 
 ### Data Extraction
-- **Image Upload** — Upload figure images (PNG, JPG, BMP, WebP) with zoom and pan
-- **Axis Calibration** — 4-point calibration system with linear/log scale support
-- **Color Picker** — Sample curve colors from the image with adjustable tolerance
-- **Curve Extraction** — Automatically extract data points by color matching
-- **Interactive Editing** — Drag points on canvas or edit values in the data table
-- **Overlay Verification** — Overlay extracted curve on original image to verify accuracy
-- **Export** — Export data as CSV or Excel, or send directly to the plotting module
-- **Collapsible Sidebar** — Toggle left-side extraction panels to maximize canvas space
-- **Calibration Visualization** — Visual feedback showing calibration point positions on the image
-- **Sample Step Control** — Adjust point density during extraction for optimal data resolution
+- **Image Upload** — PNG, JPG, BMP, WebP with zoom and pan
+- **Axis Calibration** — 4-point system with linear/log scale support
+- **Color-Based Extraction** — Sample curve colors with adjustable tolerance, auto-extract data points
+- **Manual Drawing** — Place points along curves manually when auto-extraction isn't suitable
+- **Overlay Verification** — Superimpose extracted curve on the original image for accuracy check
+- **Export** — CSV, Excel, or send directly to the plotting module
 
 ### Scientific Plotting
-- **ECharts Engine** — Interactive chart rendering with real-time preview
-- **Multi-Dataset** — Overlay multiple datasets on the same plot with dual Y-axis support
-- **Style Templates** — Built-in academic journal styles:
-  - **Default** — Clean general-purpose style
-  - **Nature** — Compact style for Nature journal figures
-  - **IEEE** — Column-width style for IEEE publications
-  - **ACS** — ACS single-column figure style
-  - **Science** — Minimal style for Science journal figures
-- **Custom Overrides** — Adjust title font size, line width, colors, grid visibility
-- **Chart Export** — Export as PNG or SVG with configurable DPI (72–600)
-- **Draggable Points** — Drag data points directly on the chart to adjust values interactively
-- **Auto-Fit Canvas** — Chart canvas automatically adapts to container resizing
-- **Unlimited Datasets** — No limit on number of datasets per chart
-- **Dataset Copy** — Duplicate datasets with one click for quick comparison variants
+- **ECharts Engine** — Interactive rendering with real-time preview
+- **Journal Templates** — Default, Nature, IEEE, ACS, Science, plus color-blind safe palettes (Vibrant, Muted, High Contrast)
+- **Multi-Dataset** — Unlimited datasets per chart, dual Y-axis, dataset duplication
+- **Fine Control** — Symbol shape/size, legend position, grid style, line type, smooth curves, axis font size
+- **Draggable Points** — Adjust data values by dragging points directly on the chart (toggleable for clean exports)
+- **Export** — PNG or SVG with configurable DPI (72–600)
 
 ### Benchmark Query
-- **Dataset Search** — Query time series prediction benchmark datasets by keyword with instant filtering
-- **Task Filtering** — Filter by task categories (forecasting, classification, anomaly detection, etc.)
-- **Algorithm Comparison** — View algorithm performance metrics (MSE, MAE) across multiple prediction horizons
-- **Paper References** — Direct links to original papers for each algorithm result
-- **Export Results** — Copy benchmark tables as LaTeX, TSV, or Markdown for paper writing
+- **Dataset Search** — 12 time series benchmark datasets with keyword filtering
+- **Task Categories** — Long/short-term forecasting, anomaly detection, classification, imputation
+- **Algorithm Comparison** — MSE/MAE metrics across prediction horizons (96, 192, 336, 720) with best-value highlighting
+- **Paper Links** — Direct arXiv links for every algorithm result
+- **Copy to Paper** — One-click export as LaTeX, TSV, or Markdown table
 
 ### General
-- **i18n** — Full Chinese and English language support
-- **Client-Side** — All processing happens in the browser, no server required
+- **Bilingual** — Full Chinese and English interface
+- **Client-Side Only** — All processing in the browser, no data leaves your machine
 - **Persistent Storage** — Datasets saved locally via IndexedDB (Dexie)
 
 ## Tech Stack
@@ -76,28 +53,15 @@ A web-based tool for extracting data from scientific paper figures and creating 
 | Charts | [ECharts 6](https://echarts.apache.org/) |
 | State Management | [Zustand 5](https://zustand.docs.pmnd.rs/) |
 | Local Database | [Dexie 4](https://dexie.org/) (IndexedDB) |
-| CSV Parsing | [PapaParse](https://www.papaparse.com/) |
-| Excel Export | [SheetJS](https://sheetjs.com/) |
+| CSV/Excel | [PapaParse](https://www.papaparse.com/) + [SheetJS](https://sheetjs.com/) |
 | Testing | [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) |
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js 18+
-- npm or pnpm
-
-### Install & Run
-
 ```bash
-# Clone the repository
 git clone https://github.com/your-username/figure-painter.git
 cd figure-painter
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
@@ -109,30 +73,27 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 npm run build
 ```
 
-The static site is exported to the `out/` directory and can be deployed to any static hosting service.
+Static site exports to `out/` — deploy to any static hosting service.
 
 ## Project Structure
 
 ```
 figure-painter/
 ├── app/                    # Next.js pages (home, extract, plot, benchmark)
-│   └── benchmark/          # Benchmark query page
 ├── components/
 │   ├── benchmark/          # Benchmark query components
 │   ├── extract/            # Data extraction components
 │   ├── plot/               # Plotting components
 │   ├── shared/             # Navigation, Providers, LanguageSwitcher
 │   └── ui/                 # shadcn/ui primitives
+├── hooks/                  # Custom React hooks (useECharts, etc.)
 ├── lib/
 │   ├── i18n/               # Internationalization (en, zh)
-│   ├── benchmarkData.ts    # Benchmark dataset definitions
+│   ├── benchmarkData.ts    # Benchmark dataset & algorithm data
 │   ├── templates.ts        # Chart style templates
 │   └── types.ts            # TypeScript type definitions
-├── stores/                 # Zustand stores
-│   ├── extractStore.ts     # Extraction state
-│   ├── datasetStore.ts     # Dataset persistence (Dexie)
-│   └── plotStore.ts        # Plot configuration state
-└── services/               # Export services (CSV, Excel)
+├── stores/                 # Zustand stores (extract, dataset, plot)
+└── services/               # Export services (CSV, Excel, PNG, SVG)
 ```
 
 ## License

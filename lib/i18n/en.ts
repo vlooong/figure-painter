@@ -192,6 +192,7 @@ export const en: Translations = {
       smooth: 'Smooth Curve',
       axisLabels: 'Axis Labels',
       axisFontSize: 'Font Size: {n}pt',
+      showDragHandles: 'Show Drag Handles',
     },
   },
   templates: {

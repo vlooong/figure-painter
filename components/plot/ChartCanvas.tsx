@@ -183,7 +183,16 @@ export const ChartCanvas = forwardRef<ChartCanvasHandle>(function ChartCanvas(_p
   // After chart renders, position graphic elements and make them draggable
   const updateGraphicPositions = useCallback(() => {
     const instance = chartRef.current
-    if (!instance || !activePlot) return
+    if (!activePlot) return
+    if (!instance) return
+
+    const adv = activePlot.advancedConfig ?? {}
+
+    // If drag handles are hidden, clear any existing graphic elements
+    if (adv.showDragHandles === false) {
+      setOption({ graphic: [] }, { replaceMerge: ['graphic'] } as never)
+      return
+    }
 
     const graphicElements: Record<string, unknown>[] = []
 

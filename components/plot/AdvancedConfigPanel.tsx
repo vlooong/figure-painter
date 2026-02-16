@@ -33,6 +33,18 @@ export function AdvancedConfigPanel() {
         <div className="flex flex-col gap-3 px-3 pb-3 pt-1">
           <div className="flex items-center gap-2">
             <Checkbox
+              checked={adv.showDragHandles ?? true}
+              onCheckedChange={(checked) =>
+                update({ showDragHandles: checked === true })
+              }
+            />
+            <span className="text-xs text-muted-foreground">
+              {t('plot.advancedConfig.showDragHandles')}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Checkbox
               checked={adv.showSymbol ?? true}
               onCheckedChange={(checked) =>
                 update({ showSymbol: checked === true })

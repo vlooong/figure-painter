@@ -192,6 +192,7 @@ export interface Translations {
       smooth: string
       axisLabels: string
       axisFontSize: string
+      showDragHandles: string
     }
   }
   templates: {

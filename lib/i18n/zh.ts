@@ -192,6 +192,7 @@ export const zh: Translations = {
       smooth: '平滑曲线',
       axisLabels: '坐标轴标签',
       axisFontSize: '字号: {n}pt',
+      showDragHandles: '显示拖拽手柄',
     },
   },
   templates: {

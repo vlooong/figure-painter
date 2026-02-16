@@ -95,6 +95,8 @@ export interface AdvancedConfig {
   smooth?: boolean
   // Axis Labels
   axisFontSize?: number
+  // Interaction
+  showDragHandles?: boolean
 }
 
 // ---- Plot Configuration ----

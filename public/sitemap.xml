@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://figure.vlooong.top</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://figure.vlooong.top/extract</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://figure.vlooong.top/plot</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://figure.vlooong.top/benchmark</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>

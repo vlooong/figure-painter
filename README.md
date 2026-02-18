@@ -6,6 +6,13 @@ A browser-based toolkit for scientific paper figure data extraction, publication
 
 [中文文档](./README.zh-CN.md)
 
+## Highlights
+
+- **End-to-end workflow** — From figure data extraction to journal-ready plotting and benchmark querying in one place.
+- **Local-first** — Runs entirely in the browser; data stays in IndexedDB and works offline after first load.
+- **Publication-focused** — Built-in journal templates, color-blind safe palettes, and high-DPI export.
+- **Paper-friendly output** — One-click table export to LaTeX/TSV/Markdown for fast write-ups.
+
 ## Why Figure Painter?
 
 - **Extract data from paper figures** — Upload a chart image, calibrate axes, pick curve colors, and automatically extract data points. No more manual reading of graph values.
@@ -42,6 +49,26 @@ A browser-based toolkit for scientific paper figure data extraction, publication
 - **Bilingual** — Full Chinese and English interface
 - **Client-Side Only** — All processing in the browser, no data leaves your machine
 - **Persistent Storage** — Datasets saved locally via IndexedDB (Dexie)
+
+## Usage Flow
+
+### 1. Data Extraction
+1. Upload a chart image and zoom/pan to the target area
+2. Calibrate axes with 4 points and choose linear or log scale
+3. Sample curve colors, adjust tolerance, and auto-extract points
+4. Manually refine points and verify with overlay
+5. Export as CSV/Excel or send to the plotting module
+
+### 2. Scientific Plotting
+1. Pick a journal template or color palette
+2. Add or import datasets; enable dual Y-axis if needed
+3. Fine-tune line style, symbols, axes, and grid
+4. Export to PNG/SVG with the target DPI
+
+### 3. Benchmark Query
+1. Filter by task category, dataset, and algorithm
+2. Compare MSE/MAE across prediction horizons
+3. Copy LaTeX/TSV/Markdown tables directly into your paper
 
 ## Tech Stack
 

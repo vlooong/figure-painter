@@ -61,6 +61,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    other: {
+      "msvalidate.01": "4CFABB2C4A7A6D268327B644532AAD02",
+    },
+  },
 };
 
 const jsonLd = {

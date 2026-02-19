@@ -1,11 +1,13 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type { ImageRecord, Dataset, PlotConfig, ChartTemplate } from '@/lib/types'
+import type { GalleryFavorite } from '@/lib/gallery-types'
 
 class FigurePainterDB extends Dexie {
   images!: EntityTable<ImageRecord, 'id'>
   datasets!: EntityTable<Dataset, 'id'>
   plots!: EntityTable<PlotConfig, 'id'>
   templates!: EntityTable<ChartTemplate, 'id'>
+  galleryFavorites!: EntityTable<GalleryFavorite, 'id'>
 
   constructor() {
     super('FigurePainterDB')
@@ -14,6 +16,13 @@ class FigurePainterDB extends Dexie {
       datasets: 'id, name, sourceType, sourceImageId, createdAt',
       plots: 'id, title, createdAt',
       templates: 'id, name',
+    })
+    this.version(2).stores({
+      images: 'id, name, createdAt',
+      datasets: 'id, name, sourceType, sourceImageId, createdAt',
+      plots: 'id, title, createdAt',
+      templates: 'id, name',
+      galleryFavorites: 'id, itemId, createdAt',
     })
   }
 }

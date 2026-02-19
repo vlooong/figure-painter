@@ -14,6 +14,7 @@ export function Navigation() {
     { href: '/', label: t('nav.home') },
     { href: '/extract', label: t('nav.extract') },
     { href: '/plot', label: t('nav.plot') },
+    { href: '/gallery', label: t('nav.gallery') },
     { href: '/benchmark', label: t('nav.benchmark') },
   ]
 

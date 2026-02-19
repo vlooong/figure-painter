@@ -16,6 +16,7 @@ export interface Translations {
     extract: string
     plot: string
     benchmark: string
+    gallery: string
   }
   home: {
     title: string
@@ -23,6 +24,7 @@ export interface Translations {
     extractLink: string
     plotLink: string
     benchmarkLink: string
+    galleryLink: string
   }
   extract: {
     tools: {
@@ -227,5 +229,67 @@ export interface Translations {
     datasets: string
     settingLabel: string
     source: string
+  }
+  gallery: {
+    title: string
+    subtitle: string
+    search: string
+    filters: {
+      chartType: string
+      journalStyle: string
+      colorTone: string
+      reset: string
+    }
+    chartTypes: {
+      line: string
+      bar: string
+      scatter: string
+      heatmap: string
+      box: string
+      violin: string
+      area: string
+      radar: string
+      pie: string
+      sankey: string
+      other: string
+    }
+    colorTones: {
+      warm: string
+      cool: string
+      neutral: string
+      vibrant: string
+      muted: string
+      monochrome: string
+    }
+    noResults: string
+    items: string
+    source: string
+    favorite: string
+    unfavorite: string
+    colorPalette: string
+    tags: string
+    generateWithStyle: string
+    generateComingSoon: string
+    detail: {
+      title: string
+      description: string
+      source: string
+      chartType: string
+      journalStyle: string
+      colorTone: string
+      colorPalette: string
+    }
+    aiConfig: {
+      title: string
+      description: string
+      apiKey: string
+      baseUrl: string
+      modelName: string
+      save: string
+      clear: string
+      saved: string
+      notConfigured: string
+      securityNote: string
+    }
   }
 }

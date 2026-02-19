@@ -251,6 +251,10 @@ export interface Translations {
       radar: string
       pie: string
       sankey: string
+      volcano: string
+      bubble: string
+      ridge: string
+      waterfall: string
       other: string
     }
     colorTones: {

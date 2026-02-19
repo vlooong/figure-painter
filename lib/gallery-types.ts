@@ -11,6 +11,10 @@ export type ChartType =
   | 'radar'
   | 'pie'
   | 'sankey'
+  | 'volcano'
+  | 'bubble'
+  | 'ridge'
+  | 'waterfall'
   | 'other'
 
 export type JournalStyle =

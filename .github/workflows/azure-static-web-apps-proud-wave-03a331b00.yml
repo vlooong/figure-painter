@@ -32,6 +32,10 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "out" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
+        env:
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+          BING_SITE_VERIFICATION: ${{ secrets.BING_SITE_VERIFICATION }}
+          NEXT_PUBLIC_GALLERY_CDN_BASE: ${{ secrets.NEXT_PUBLIC_GALLERY_CDN_BASE }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

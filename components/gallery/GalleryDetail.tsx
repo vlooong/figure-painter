@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useTranslation } from '@/lib/i18n'
 import { useGalleryStore } from '@/stores/galleryStore'
 import { galleryImageUrl } from '@/lib/galleryData'
@@ -15,9 +15,20 @@ interface GalleryDetailProps {
 export function GalleryDetail({ item, onClose }: GalleryDetailProps) {
   const { t, locale } = useTranslation()
   const favorites = useGalleryStore((s) => s.favorites)
+  const aiConfig = useGalleryStore((s) => s.aiConfig)
   const { toggleFavorite } = useGalleryStore((s) => s.actions)
   const isFav = favorites.has(item.id)
   const [imgError, setImgError] = useState(false)
+  const [showConfigHint, setShowConfigHint] = useState(false)
+
+  const handleGenerate = useCallback(() => {
+    if (!aiConfig) {
+      setShowConfigHint(true)
+      setTimeout(() => setShowConfigHint(false), 3000)
+      return
+    }
+    // AI generation not yet implemented
+  }, [aiConfig])
 
   const title = locale === 'zh' ? item.titleZh : item.title
   const description = locale === 'zh' ? item.descriptionZh : item.description
@@ -155,17 +166,24 @@ export function GalleryDetail({ item, onClose }: GalleryDetailProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2">
-          <Button
-            variant={isFav ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => toggleFavorite(item.id)}
-          >
-            {isFav ? t('gallery.unfavorite') : t('gallery.favorite')}
-          </Button>
-          <Button variant="outline" size="sm" disabled title={t('gallery.generateComingSoon')}>
-            {t('gallery.generateWithStyle')}
-          </Button>
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <Button
+              variant={isFav ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => toggleFavorite(item.id)}
+            >
+              {isFav ? t('gallery.unfavorite') : t('gallery.favorite')}
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleGenerate}>
+              {t('gallery.generateWithStyle')}
+            </Button>
+          </div>
+          {showConfigHint && (
+            <p className="text-xs text-destructive">
+              {t('gallery.aiConfig.notConfigured')}
+            </p>
+          )}
         </div>
       </div>
     </div>

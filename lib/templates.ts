@@ -33,8 +33,8 @@ const HIGH_CONTRAST_COLORS = [
   '#BB5566', // red
 ]
 
-// Journal-specific palettes
-const NATURE_COLORS = [
+// Style-specific palettes
+const CORAL_TEAL_COLORS = [
   '#E64B35', // red
   '#4DBBD5', // cyan
   '#00A087', // teal
@@ -45,7 +45,7 @@ const NATURE_COLORS = [
   '#DC0000', // crimson
 ]
 
-const IEEE_COLORS = [
+const CLASSIC_BLUE_COLORS = [
   '#0072BD', // blue
   '#D95319', // orange
   '#EDB120', // gold
@@ -54,7 +54,7 @@ const IEEE_COLORS = [
   '#4DBEEE', // light blue
 ]
 
-const ACS_COLORS = [
+const BOLD_PRIMARY_COLORS = [
   '#0C5DA5', // blue
   '#FF2C00', // red
   '#00B945', // green
@@ -63,7 +63,7 @@ const ACS_COLORS = [
   '#474747', // dark gray
 ]
 
-const SCIENCE_COLORS = [
+const MINIMAL_CHIC_COLORS = [
   '#0C5DA5', // blue
   '#FF2C00', // red
   '#00B945', // green
@@ -93,73 +93,73 @@ const defaultTemplate: ChartTemplate = {
 
 const natureTemplate: ChartTemplate = {
   id: 'nature',
-  name: 'Nature',
-  description: 'Compact style for Nature journal figures',
+  name: 'Coral Teal',
+  description: 'Warm coral and cool teal tones, compact layout',
   fontFamily: 'Arial, Helvetica, sans-serif',
   fontSize: { title: 8, axis: 7, legend: 6, tick: 6 },
   lineWidth: 1,
-  colors: NATURE_COLORS,
+  colors: CORAL_TEAL_COLORS,
   axisStyle: {
     showGrid: false,
     gridStyle: 'solid',
     tickInside: true,
     boxFrame: true,
   },
-  // Nature single column: 89mm ≈ 340px at 96dpi
+  // Compact: 340x300 at 300 DPI
   dimensions: { width: 340, height: 300, dpi: 300 },
 }
 
 const ieeeTemplate: ChartTemplate = {
   id: 'ieee',
-  name: 'IEEE',
-  description: 'Column-width style for IEEE publications',
+  name: 'Classic Blue',
+  description: 'Traditional blue-orange palette with serif fonts',
   fontFamily: '"Times New Roman", Times, serif',
   fontSize: { title: 9, axis: 8, legend: 7, tick: 7 },
   lineWidth: 1,
-  colors: IEEE_COLORS,
+  colors: CLASSIC_BLUE_COLORS,
   axisStyle: {
     showGrid: true,
     gridStyle: 'dotted',
     tickInside: false,
     boxFrame: false,
   },
-  // IEEE single column: 3.5in = 336px at 96dpi, requires 600 DPI
+  // Narrow column: 336x252 at 600 DPI
   dimensions: { width: 336, height: 252, dpi: 600 },
 }
 
 const acsTemplate: ChartTemplate = {
   id: 'acs',
-  name: 'ACS',
-  description: 'ACS single-column figure style',
+  name: 'Bold Primary',
+  description: 'Strong primary colors with box framing',
   fontFamily: 'Arial, Helvetica, sans-serif',
   fontSize: { title: 9, axis: 8, legend: 7, tick: 7 },
   lineWidth: 1.5,
-  colors: ACS_COLORS,
+  colors: BOLD_PRIMARY_COLORS,
   axisStyle: {
     showGrid: false,
     gridStyle: 'solid',
     tickInside: true,
     boxFrame: true,
   },
-  // ACS single column: 3.25in ≈ 312px at 96dpi
+  // Compact column: 312x234 at 300 DPI
   dimensions: { width: 312, height: 234, dpi: 300 },
 }
 
 const scienceTemplate: ChartTemplate = {
   id: 'science',
-  name: 'Science',
-  description: 'Minimal style for Science / AAAS figures',
+  name: 'Minimal Chic',
+  description: 'Minimal fine lines with refined color accents',
   fontFamily: 'Helvetica, Arial, sans-serif',
   fontSize: { title: 7, axis: 6, legend: 6, tick: 5 },
   lineWidth: 0.75,
-  colors: SCIENCE_COLORS,
+  colors: MINIMAL_CHIC_COLORS,
   axisStyle: {
     showGrid: false,
     gridStyle: 'solid',
     tickInside: true,
     boxFrame: true,
   },
-  // Science single column: ~55mm ≈ 210px at 96dpi
+  // Minimal: 340x255 at 300 DPI
   dimensions: { width: 340, height: 255, dpi: 300 },
 }
 

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Scientific Plotting - Publication-Quality Charts",
   description:
-    "Create publication-quality scientific plots with journal style templates including Nature, IEEE, ACS, and Science. Export as SVG or PNG.",
+    "Create publication-quality scientific plots with multiple style templates. Export as SVG or PNG.",
   alternates: {
     canonical: "/plot",
     languages: {
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Scientific Plotting - Publication-Quality Charts",
     description:
-      "Create publication-quality scientific plots with journal style templates including Nature, IEEE, ACS, and Science.",
+      "Create publication-quality scientific plots with multiple style templates.",
     url: "/plot",
   },
 };

@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 const SITE_URL = "https://figure.vlooong.top";
 const SITE_TITLE = "Figure Painter - Scientific Figure Data Extraction & Plotting";
-const SITE_DESCRIPTION = "Extract curve data from paper figures and create publication-quality plots with journal style templates (Nature, IEEE, ACS, Science)";
+const SITE_DESCRIPTION = "Extract curve data from paper figures and create publication-quality plots with multiple style templates";
 
 export const metadata: Metadata = {
   title: {
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
     "paper figure",
     "curve digitizer",
     "publication-quality plots",
-    "Nature style plot",
-    "IEEE plot template",
+    "scientific style templates",
+    "plot style template",
     "time series benchmark",
     "chart data extractor",
   ],
